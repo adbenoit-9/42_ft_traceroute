@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 12:51:23 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/18 14:11:49 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/19 14:36:39 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,24 @@
 */
 # define EP_FAMILY 5
 # define EP_NONAME 8
-# define EP_REPLY ELAST + 1
-# define EP_NODATA ELAST + 2
-# define EP_RESOOR ELAST + 3
+# define EP_BADVAL ELAST + 1
+# define EP_BADLEN ELAST + 2
+# define EP_NODATA ELAST + 3
 # define EP_BADARG ELAST + 4
 # define EP_BADOPT ELAST + 5
 # define EP_NOARG ELAST + 6
-# define EP_ARGOOR ELAST + 7
 # define EP_MULHOST ELAST + 7
-# define EP_BADPACK ELAST + 8
 
 /*
 ** -- Error messages --
 */
 
-# define EP_REPLY_MSG "ft_ping: data corrupted\n"
-# define EP_NODATA_MSG "ft_ping: usage error: Destination address required\n"
-# define EP_BADARG_MSG  "ft_ping: invalid agument: '%s'\n"
-# define EP_BADOPT_MSG "ft_ping: invalid option -- '%c'\n"
-# define EP_NOARG_MSG "ft_ping: option requires an argument -- '%c'\n"
-# define EP_ARGOOR_MSG  "ft_ping: invalid agument: '%s': out of range: %d <= value <= %ld\n"
-# define EP_RESOOR_MSG  "ft_ping: invalid agument: '%s': Numerical result out of range\n"
+# define EP_NODATA_MSG "ft_traceroute: usage error: Destination address required\n"
+# define EP_BADARG_MSG  "ft_traceroute: invalid agument: '%s'\n"
+# define EP_BADVAL_MSG  "ft_traceroute: bad value for packet length: \"%s\"\n"
+# define EP_BADLEN_MSG  "ft_traceroute: packet length must be %s\n"
+# define EP_BADOPT_MSG "ft_traceroute: invalid option -- '%s'\n"
+# define EP_NOARG_MSG "ft_traceroute: option requires an argument -- '%s'\n"
 
 # ifndef OS
 

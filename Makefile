@@ -6,7 +6,7 @@
 #    By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/28 16:29:13 by adbenoit          #+#    #+#              #
-#    Updated: 2022/07/16 18:48:27 by adbenoit         ###   ########.fr        #
+#    Updated: 2022/07/19 14:28:21 by adbenoit         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,8 @@ DIRS			:= $(OBJ_DIR) $(addprefix $(OBJ_DIR)/, $(SUB_DIR))
 # FILES
 NAME			:= ft_traceroute
 SRC				:=	main.c \
+					utils.c \
+					error.c \
 					parser.c
 SUB_SRC			:= 
 # SRC				+= $(addprefix {name}, $(SUB_SRC))

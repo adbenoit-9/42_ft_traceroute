@@ -6,11 +6,11 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 17:27:25 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/17 17:40:06 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/19 14:47:37 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_ping.h"
+#include "ft_traceroute.h"
 
 #ifdef OS
 
@@ -84,46 +84,55 @@ char	*ft_strerror(int error)
 int	ft_perror(const char *error, const char *fct)
 {
 	if (!error && fct)
-		dprintf(STDERR_FILENO, "ft_ping: %s: unknown error\n", fct);
+		dprintf(STDERR_FILENO, "ft_traceroute: %s: unknown error\n", fct);
 	else if (!error)
-		dprintf(STDERR_FILENO, "ft_ping: unknown error\n");
+		dprintf(STDERR_FILENO, "ft_traceroute: unknown error\n");
 	else if (fct)
-		dprintf(STDERR_FILENO, "ft_ping: %s: %s\n", fct, error);
+		dprintf(STDERR_FILENO, "ft_traceroute: %s: %s\n", fct, error);
 	else
-		dprintf(STDERR_FILENO, "ft_ping: %s\n", error);
+		dprintf(STDERR_FILENO, "ft_traceroute: %s\n", error);
 	return (0);
 }
 
-int	fatal_error(int error, const char *arg, const char option)
+int	fatal_error(int error, const char *arg, const int len)
 {
-	char		*msg[] = {EP_REPLY_MSG, EP_NODATA_MSG};
 	int			status;
 
 	if (error <= ELAST)
 		ft_perror(ft_strerror(error), arg);
-	else if (error <= EP_NODATA)
-		dprintf(STDERR_FILENO, "%s", msg[error - ELAST - 1]);
-	else if (error == EP_BADARG)
-		dprintf(STDERR_FILENO, EP_BADARG_MSG, arg);
-	else if (error == EP_BADOPT) {
-		dprintf(STDERR_FILENO, EP_BADOPT_MSG, option);
-		print_usage();
+	switch (error)
+	{
+		case EP_BADLEN:
+			if (len <= 52)
+				dprintf(STDERR_FILENO, EP_BADLEN_MSG, "> 51");
+			else
+				dprintf(STDERR_FILENO, EP_BADLEN_MSG, "<= 32768");
+			break ;
+		case EP_BADVAL:
+			dprintf(STDERR_FILENO, EP_BADVAL_MSG, arg);
+			break ;
+		case EP_NODATA:
+			dprintf(STDERR_FILENO, EP_NODATA_MSG);
+			break ;
+		case EP_BADARG:
+			dprintf(STDERR_FILENO, EP_BADARG_MSG, arg);
+			break ;
+		case EP_BADOPT:
+			dprintf(STDERR_FILENO, EP_BADOPT_MSG, arg);
+			print_usage();
+			break ;
+		case EP_NOARG:
+			dprintf(STDERR_FILENO, EP_NOARG_MSG, arg);
+			print_usage();
+			break ;
+		case EP_MULHOST:
+			print_usage();
+			break ;
+		default :
+			dprintf(STDERR_FILENO, "ft_traceroute: Unknown error %d\n", error);
+			break ;
 	}
-	else if (error == EP_NOARG) {
-		dprintf(STDERR_FILENO, EP_BADOPT_MSG, option);
-		print_usage();
-	}
-	else if (error == EP_ARGOOR && option == 'c')
-		dprintf(STDERR_FILENO, EP_ARGOOR_MSG, arg, 1, LLONG_MAX);
-	else if (error == EP_ARGOOR && option == 't')
-		dprintf(STDERR_FILENO, EP_ARGOOR_MSG, arg, 0, (long int)255);
-	else if (error == EP_RESOOR)
-		dprintf(STDERR_FILENO, EP_RESOOR_MSG, arg);
-	else if (error == EP_MULHOST)
-		print_usage();
-	else
-		dprintf(STDERR_FILENO, "ft_ping: Unknown error %d", error);
-	clear_data();
+	clear_data(&g_data);
 	status = (error >= EP_NODATA) ? USAGE_ERR : ERROR;
 	exit(status);
 }
