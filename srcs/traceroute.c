@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:39:49 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/19 17:31:14 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/20 00:16:24 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,13 @@ void	send_probes(t_data *data, t_packet *packet)
 
 t_packet	*setup_packet(t_packet *packet)
 {
+	// udp dest port : 33434(traceroute port)+seq (pk + seq ? port : 33434-33534,
+	//		give the position of the device ?)
+	// udp src port :  pid with first bit set (pk ?
+	// 		je crois que c'est pck on ne veut pas de rep alors pk pas a 0 ???
+	//		+ seq (pk + seq ?)
+	// udp len : (- iphdr)
+	// udp sum: 0
 	return (packet);
 }
 
@@ -46,7 +53,8 @@ void    traceroute(t_data *data)
 	{
 		packet->ttl = ttl;
 		send_probes(data, ttl);
-		// if (setsockopt(data->sockfd, IPPROTO_UDP, IP_TTL, &ttl, sizeof(ttl)) == -1)
+		// si je mets IP_HDRINCL estce que je dois remplir iphdr a la mano ? non faut appeler bind
+		// if (setsockopt(data->sockfd, IPPROTO_IP, IP_HDRINCL, &ttl, sizeof(ttl)) == -1)
 		// 	fatal_error(errno, "setsockopt", 0, data);
 		printf("%d\t\n", ttl);
 	}

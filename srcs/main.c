@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:43:07 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/19 16:28:12 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/20 00:17:11 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	main(int ac, char **av)
 	data = init_data();
 	parser(av + 1, &data);
 	setup_address(&data);
-	setup_socket(&data);
+	setup_socket(&data); // il faut 2, une pour send et une pour recv (pas meme protocol)
 	traceroute(&data);
 	return (0);
 }
