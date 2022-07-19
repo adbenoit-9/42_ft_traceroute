@@ -1,2 +1,2 @@
-# 42_ft_traceroute
-42 - Recoding the traceroute command.
+# FT_TRACEROUTE (@42Paris)
+*Recoding the traceroute command*
