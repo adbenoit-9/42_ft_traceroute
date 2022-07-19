@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 17:45:31 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/19 14:37:42 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/19 17:16:36 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,17 @@
 # include <arpa/inet.h>
 # include <ctype.h>
 # include <netinet/ip_icmp.h>
+# include <netinet/udp.h>
 # include <stdbool.h>
 # include <sys/time.h>
 # include <math.h>
 # include "error.h"
 
 # define NONE 0
-# define PACKET_SIZE 60
+# define PACKET_LEN 52 // Mac: 52
+# define MAXPACKET 32768
+# define NPROBES 3
+# define NHOPS_MAX 64 // Mac: net.inet.ip.ttl | linux: 30 ?
 
 /*
 ** -- Exit codes --

@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 17:27:25 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/19 14:47:37 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/19 16:35:30 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,10 @@ int	ft_perror(const char *error, const char *fct)
 	return (0);
 }
 
-int	fatal_error(int error, const char *arg, const int len)
+int	fatal_error(int error, const char *arg, const int len, t_data *data)
 {
 	int			status;
 
-	if (error <= ELAST)
-		ft_perror(ft_strerror(error), arg);
 	switch (error)
 	{
 		case EP_BADLEN:
@@ -129,10 +127,11 @@ int	fatal_error(int error, const char *arg, const int len)
 			print_usage();
 			break ;
 		default :
-			dprintf(STDERR_FILENO, "ft_traceroute: Unknown error %d\n", error);
+			ft_perror(ft_strerror(error), arg);
 			break ;
 	}
-	clear_data(&g_data);
+	if (data)
+		clear_data(data);
 	status = (error >= EP_NODATA) ? USAGE_ERR : ERROR;
 	exit(status);
 }

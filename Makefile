@@ -6,7 +6,7 @@
 #    By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/28 16:29:13 by adbenoit          #+#    #+#              #
-#    Updated: 2022/07/19 14:28:21 by adbenoit         ###   ########.fr        #
+#    Updated: 2022/07/19 16:29:28 by adbenoit         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,8 @@ NAME			:= ft_traceroute
 SRC				:=	main.c \
 					utils.c \
 					error.c \
+					traceroute.c \
+					setup.c \
 					parser.c
 SUB_SRC			:= 
 # SRC				+= $(addprefix {name}, $(SUB_SRC))

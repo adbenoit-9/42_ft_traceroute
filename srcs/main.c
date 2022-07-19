@@ -5,19 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/28 16:31:36 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/19 14:42:03 by adbenoit         ###   ########.fr       */
+/*   Created: 2022/07/19 15:43:07 by adbenoit          #+#    #+#             */
+/*   Updated: 2022/07/19 16:28:12 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_traceroute.h"
-
-t_data	g_data;
-
-void	clear_data(t_data *data)
-{
-	free(data->host);
-}
 
 int		print_usage(void)
 {
@@ -34,8 +27,11 @@ int	main(int ac, char **av)
 	t_data	data;
 
 	if (ac == 1)
-		fatal_error(EP_NODATA, NULL, 0);
-	data = parser(av + 1);
-	g_data = data;
+		fatal_error(EP_NODATA, NULL, 0, NULL);
+	data = init_data();
+	parser(av + 1, &data);
+	setup_address(&data);
+	setup_socket(&data);
+	traceroute(&data);
 	return (0);
 }
