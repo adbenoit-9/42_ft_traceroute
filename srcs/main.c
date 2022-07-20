@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:43:07 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/20 00:17:11 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/20 10:52:30 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int		print_usage(void)
 	printf("--help              print help and exit\n");
 	printf("\n");
 	return (0);
-	
 }
 
 int	main(int ac, char **av)

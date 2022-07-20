@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 18:45:13 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/19 17:03:02 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/20 10:55:13 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ t_data	init_data(void)
 	data.host = NULL;
 	data.packetlen = -1;
 	bzero(data.ip, INET_ADDRSTRLEN);
-	data.sockfd = -1;
+	data.sndsock = -1;
+	data.rcvsock = -1;
 	data.pid = getpid();
 	bzero(&data.sockaddr, sizeof(data.sockaddr));
 	return (data);
@@ -28,8 +29,10 @@ t_data	init_data(void)
 void	clear_data(t_data *data)
 {
 	free(data->host);
-	if (data->sockfd != -1)
-		close(data->sockfd);
+	if (data->sndsock != -1)
+		close(data->sndsock);
+	if (data->rcvsock != -1)
+		close(data->rcvsock);
 }
 
 t_data	*setup_address(t_data *data)
@@ -59,8 +62,11 @@ t_data	*setup_address(t_data *data)
 
 t_data	*setup_socket(t_data *data)
 {
-	data->sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
-	if (data->sockfd == -1)
+	data->sndsock = socket(AF_INET, SOCK_RAW, IPPROTO_UDP);
+	if (data->sndsock == -1)
+		fatal_error(errno, "socket", 0, data);
+	data->rcvsock = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
+	if (data->rcvsock == -1)
 		fatal_error(errno, "socket", 0, data);
 	return (data);
 }

@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:44:42 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/19 17:17:35 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/20 12:15:04 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ typedef struct s_data
     char            ip[INET_ADDRSTRLEN];
     int             packetlen;
 	struct sockaddr	sockaddr;
-	int				sockfd;
+	int				sndsock;
+	int				rcvsock;
 	uint8_t			pid;
 }   t_data;
 
@@ -52,5 +53,7 @@ t_data	init_data(void);
 t_data	*setup_address(t_data *data);
 t_data	*setup_socket(t_data *data);
 
+void	debug_icmp(struct icmp icmphdr);
+void	debug_packet(t_packet packet);
 
 #endif
