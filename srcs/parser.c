@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 14:42:56 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/19 16:25:11 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/20 13:46:59 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_data	*parser(char **arg, t_data *data)
 {
 	int		packetlen;
 
+	packetlen = -1;
 	for (size_t i = 0; arg[i]; i++)
 	{
 		if (!data->host && ft_strcmp(arg[i], "--help") == 0)

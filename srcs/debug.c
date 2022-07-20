@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 11:54:29 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/20 12:30:29 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/20 13:38:46 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,6 @@ void	debug_packet(t_packet packet)
 	debug_udp(packet.udp);
 	printf("seq: %d\n", packet.seq);
 	printf("ttl: %d\n", packet.ttl);
+	printf("time: %lds %ldmicros\n", packet.tv.tv_sec, (size_t)packet.tv.tv_usec);
 	printf("%s+++++++++++++++++++++++++++++%s\n", S_BLUE, S_NONE);
 }

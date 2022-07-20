@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 17:45:31 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/20 12:17:15 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/20 15:22:47 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,13 @@
 # include <sys/select.h>
 # include "error.h"
 
+# define DEBUG_LVL 2
 # define NONE 0
 # define PACKET_LEN 52 // Mac: 52
 # define MAXPACKET 32768
 # define NPROBES 3
 # define NHOPS_MAX 64 // Mac: net.inet.ip.ttl | linux: 30 ?
-# define TIMEOUT 5 // ou 3 ?
+# define TIMEOUT 3 // ou 5 ?
 # define UDP_PORT 33434
 # define START_TLL 1
 

@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 18:45:13 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/20 10:55:13 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/20 14:09:42 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ t_data	*setup_address(t_data *data)
 
 t_data	*setup_socket(t_data *data)
 {
-	data->sndsock = socket(AF_INET, SOCK_RAW, IPPROTO_UDP);
+	data->sndsock = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);
 	if (data->sndsock == -1)
 		fatal_error(errno, "socket", 0, data);
 	data->rcvsock = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
