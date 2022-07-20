@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:44:42 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/20 17:41:12 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/20 18:03:49 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,6 @@ int			ft_wait(struct timeval start_time, size_t nb_sec);
 
 void	debug_icmp(struct icmp icmphdr);
 void	debug_packet(t_packet packet);
-
+void	debug_ip(struct ip iphdr);
 
 #endif
