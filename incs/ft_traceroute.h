@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:44:42 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/20 12:15:04 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/20 17:41:12 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 typedef struct s_packet
 {
-    struct ip       ip;
+    // struct ip       ip;
 	struct udphdr   udp;
 	u_char          seq;
 	u_char          ttl;
@@ -49,11 +49,14 @@ void	clear_data(t_data *data);
 int		print_usage(void);
 void    traceroute(t_data *data);
 
-t_data	init_data(void);
-t_data	*setup_address(t_data *data);
-t_data	*setup_socket(t_data *data);
+t_data		init_data(void);
+t_data		*setup_address(t_data *data);
+t_data		*setup_socket(t_data *data);
+t_packet	*setup_packet(t_data *data, t_packet *packet, int seq, int ttl);
+int			ft_wait(struct timeval start_time, size_t nb_sec);
 
 void	debug_icmp(struct icmp icmphdr);
 void	debug_packet(t_packet packet);
+
 
 #endif

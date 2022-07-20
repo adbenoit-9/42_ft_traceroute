@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 11:54:29 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/20 13:38:46 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/20 17:31:49 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	debug_udp(struct udphdr udp)
 void	debug_packet(t_packet packet)
 {
 	printf("%s+++++ PACKET (size %ld) +++++%s\n", S_BLUE, sizeof(t_packet), S_NONE);
-	debug_ip(packet.ip);
+	// debug_ip(packet.ip);
 	debug_udp(packet.udp);
 	printf("seq: %d\n", packet.seq);
 	printf("ttl: %d\n", packet.ttl);

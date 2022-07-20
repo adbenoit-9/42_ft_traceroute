@@ -6,31 +6,11 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:39:49 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/20 15:22:18 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/20 17:41:01 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_traceroute.h"
-
-t_packet	*setup_packet(t_data *data, t_packet *packet, int seq, int ttl)
-{
-	packet->udp.uh_dport = htons(UDP_PORT + seq);
-	packet->udp.uh_sport = htons((data->pid | 0xffff) & 0x80);
-	packet->udp.uh_ulen = htons(data->packetlen - sizeof(struct ip));
-	packet->udp.uh_sum = 0;
-	
-	packet->ttl = ttl;
-	packet->seq = seq;
-	gettimeofday(&packet->tv, NULL);
-	
-	packet->ip.ip_id = htons((data->pid | 0xffff) & 0x80 + seq);
-	packet->ip.ip_hl = sizeof(packet->ip) >> 2;
-	packet->ip.ip_v = IPVERSION;
-	packet->ip.ip_len = htons(data->packetlen);
-	packet->ip.ip_p = IPPROTO_UDP;
-	packet->ip.ip_ttl = ttl;
-	return (packet);
-}
 
 void	send_probe(t_data *data, t_packet *packet, int seq, int ttl)
 {
@@ -97,6 +77,7 @@ int	recv_reply(t_data *data)
 void    traceroute(t_data *data)
 {
 	t_packet		*packet;
+	struct timeval	tv;
 	int				seq;
 
 	printf("ft_traceroute to %s (%s), %d hops max, %d bytes packets\n",
@@ -109,8 +90,12 @@ void    traceroute(t_data *data)
 	{
 		for (int probe = 0; probe < NPROBES; probe++)
 		{
+			gettimeofday(&tv, NULL);
 			send_probe(data, packet, seq, ttl);
 			recv_reply(data);
+			if (!ft_wait(tv, 1))
+				fatal_error(errno, "gettimeofday", 0, data);
+			;
 			++seq;
 		}
 		// printf("\n");
