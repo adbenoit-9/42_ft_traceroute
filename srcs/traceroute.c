@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:39:49 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/21 12:37:51 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/21 12:47:25 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,8 @@ void    traceroute(t_data *data)
 	for (int ttl = START_TLL; ttl <= NHOPS_MAX; ttl++)
 	{
 
-		// if (setsockopt(data->sndsock, SOL_SOCKET, IP_TTL, &ttl, sizeof(ttl)) == -1)
-		// 	fatal_error(errno, "setsockopt", 0, data);
+		if (setsockopt(data->sndsock, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl)) == -1)
+			fatal_error(errno, "setsockopt", 0, data);
 		for (int probe = 0; probe < NPROBES; probe++)
 		{
 			gettimeofday(&tv, NULL);
