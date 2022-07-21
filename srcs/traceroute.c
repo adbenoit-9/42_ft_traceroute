@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:39:49 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/21 15:31:24 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/21 15:42:51 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,11 @@ void	send_probe(t_data *data, t_packet_data *packet, int seq, int ttl)
 
 void	send_probe(t_data *data, t_packet_data *packet, int seq, int ttl)
 {
+	int	ret;
 	packet->ttl = ttl;
 	packet->seq = ++seq;
-	int	ret;
+	gettimeofday(&packet->tv, NULL);
+	((struct sockaddr_in *)data->addrinfo->ai_addr)->sin_port = htons(UDP_PORT + seq);
 	ret = sendto(data->sndsock, packet, sizeof(packet), 0,
 		data->addrinfo->ai_addr, data->addrinfo->ai_addrlen);
 	if (ret == -1) {
@@ -47,11 +49,10 @@ void	send_probe(t_data *data, t_packet_data *packet, int seq, int ttl)
 
 int	recv_reply(t_data *data, char *dest)
 {
-	fd_set	fds;
-	fd_set	err;
-	int		ret;
-	socklen_t	addrlen;
-	struct timeval timeout;
+	fd_set			fds;
+	int				ret;
+	socklen_t		addrlen;
+	struct timeval	timeout;
 	
 	ret = 0;
 	timeout.tv_sec = TIMEOUT;
@@ -68,18 +69,17 @@ int	recv_reply(t_data *data, char *dest)
 			debug_ip(((t_header *)dest)->ip);
 			debug_icmp(((t_header *)dest)->icmp);
 			debug_udp(((t_header *)dest)->udp);
-			debug_packet((dest + sizeof(t_header)));
+			debug_packet(*(t_packet_data *)(dest + sizeof(t_header)));
 		}
 		if (((t_header *)dest)->icmp.icmp_type != 0) {
 			printf("%s[error] %s%s\n", S_RED, S_NONE,
 				icmp_strerror(((t_header *)dest)->icmp.icmp_type));
 		}
 #endif
+		FD_CLR(data->rcvsock, &fds);
+		return (SUCCESS);
 	}
 	FD_CLR(data->rcvsock, &fds);
-	FD_CLR(data->rcvsock, &err);
-	if (ret)
-		return (SUCCESS);
 	return (ETIMEDOUT);
 }
 
