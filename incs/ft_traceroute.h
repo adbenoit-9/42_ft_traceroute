@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:44:42 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/21 15:48:13 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/21 23:44:39 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,25 @@ typedef	struct s_header
 	struct udphdr   udp;
 }				t_header;
 
-typedef struct s_packet_data
+typedef struct s_probe_packet
 {
 	u_char          seq;
 	u_char          ttl;
 	struct timeval  tv;
-}	t_packet_data;
+}	t_probe_packet;
 
 typedef struct s_data
 {
     char            *host;
     char            ip[INET_ADDRSTRLEN];
+    char            lastip[INET_ADDRSTRLEN];
     int             packetlen;
 	struct addrinfo	*addrinfo;
 	struct sockaddr	sockaddr;
 	int				sndsock;
 	int				rcvsock;
-	uint8_t			pid;
+	uint8_t			id;
+	int				status;
 }   t_data;
 
 char	*ft_strerror(int error);
@@ -63,7 +65,7 @@ int			ft_wait(struct timeval start_time, size_t nb_sec);
 double		tv_to_ms(struct timeval t);
 
 void	debug_icmp(struct icmp icmphdr);
-void	debug_packet(t_packet_data packet);
+void	debug_packet(t_probe_packet packet);
 void	debug_ip(struct ip iphdr);
 void	debug_udp(struct udphdr udp);
 

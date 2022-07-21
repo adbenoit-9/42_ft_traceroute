@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 18:45:13 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/21 15:02:45 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/21 23:02:54 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_data	init_data(void)
 	bzero(data.ip, INET_ADDRSTRLEN);
 	data.sndsock = -1;
 	data.rcvsock = -1;
-	data.pid = getpid();
+	data.id = (getpid() & 0xffff) | 0x8000;
 	bzero(&data.sockaddr, sizeof(data.sockaddr));
 	return (data);
 }
@@ -69,7 +69,7 @@ t_data	*setup_socket(t_data *data)
 	
 	bzero(&from, sizeof(from));
 	from.sin_family = AF_INET;
-	from.sin_port = htons((data->pid & 0xffff) | 0x8000);
+	from.sin_port = htons(data->id);
 	data->sndsock = socket(AF_INET, SOCK_DGRAM, 0);
 	if (data->sndsock == -1)
 		fatal_error(errno, "socket", 0, data);
