@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:43:07 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/20 14:16:10 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/21 10:32:13 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,6 @@ int	main(int ac, char **av)
 	setup_address(&data);
 	setup_socket(&data);
 	traceroute(&data);
+	clear_data(&data);
 	return (0);
 }

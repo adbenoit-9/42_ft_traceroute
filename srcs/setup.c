@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 18:45:13 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/20 17:42:00 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/21 11:06:53 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,20 +78,20 @@ t_packet	*setup_packet(t_data *data, t_packet *packet, int seq, int ttl)
 	unsigned short	id;
 
 	id = (data->pid & 0xffff) | 0x8000;
-	packet->udp.uh_dport = htons(UDP_PORT + seq);
-	packet->udp.uh_sport = htons(id);
-	packet->udp.uh_ulen = htons(data->packetlen - sizeof(struct ip));
-	packet->udp.uh_sum = 0;
+	packet->hdr.udp.uh_dport = htons(UDP_PORT + seq);
+	packet->hdr.udp.uh_sport = htons(id);
+	packet->hdr.udp.uh_ulen = htons(data->packetlen - sizeof(struct ip));
+	packet->hdr.udp.uh_sum = 0;
 	
 	packet->ttl = ttl;
 	packet->seq = seq;
 	gettimeofday(&packet->tv, NULL);
 	
-	// packet->ip.ip_id = htons(id + seq);
-	// packet->ip.ip_hl = sizeof(packet->ip) >> 2;
-	// packet->ip.ip_v = IPVERSION;
-	// packet->ip.ip_len = htons(data->packetlen);
-	// packet->ip.ip_p = IPPROTO_UDP;
-	// packet->ip.ip_ttl = ttl;
+	packet->ip.ip_id = htons(id + seq);
+	packet->ip.ip_hl = sizeof(packet->ip) >> 2;
+	packet->ip.ip_v = IPVERSION;
+	packet->ip.ip_len = htons(data->packetlen);
+	packet->ip.ip_p = IPPROTO_UDP;
+	packet->ip.ip_ttl = ttl;
 	return (packet);
 }

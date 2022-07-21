@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:39:49 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/20 18:08:24 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/21 11:13:54 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,11 @@ int	recv_reply(t_data *data, char *dest)
 			struct ip ip;
 			ip = *(struct ip *)dest;
 			debug_ip(ip);
-			printf("len : %d\n", (int)(ip.ip_hl << 2));
 			debug_icmp(*(struct icmp *)(dest + sizeof(struct ip)));
+		}
+		if (((t_packet *)dest)->hdr.icmp.icmp_type != 0) {
+			printf("%s[error] %s%s\n", S_RED, S_NONE,
+				icmp_strerror(((struct icmp *)(dest + sizeof(struct ip)))->icmp_type));
 		}
 #endif
 		FD_CLR(data->rcvsock, &fds);
@@ -77,9 +80,31 @@ int	recv_reply(t_data *data, char *dest)
 	}
 }
 
-void	traceroute_output(char *packet)
+int	traceroute_output(t_packet	*packet, int ttl, int probe, int status, t_data *data)
 {
-	(void)packet;
+	char	src[INET_ADDRSTRLEN];
+	char	dst[INET_ADDRSTRLEN];
+
+	if (status == SUCCESS) {
+		if (!inet_ntop(AF_INET, &packet->ip.ip_src, src, INET_ADDRSTRLEN))
+			ft_perror(ft_strerror(errno), "inet_ntop");
+		if (!inet_ntop(AF_INET, &packet->ip.ip_dst, dst, INET_ADDRSTRLEN))
+			ft_perror(ft_strerror(errno), "inet_ntop");
+		if (probe == 0)
+			dprintf(STDOUT_FILENO, "%2d  %s (%s)  %s", ttl, src, src, "ok ");
+		else
+			dprintf(STDOUT_FILENO, " ok ");
+		if (probe == 2 && !ft_strcmp(src, data->ip))
+			return (true);
+	}
+	else if (probe == 0) {
+		dprintf(STDOUT_FILENO, "%2d  *", ttl);
+	}
+	else {
+		dprintf(STDOUT_FILENO, " *");
+	}
+	return (false);
+	
 }
 
 void    traceroute(t_data *data)
@@ -88,26 +113,27 @@ void    traceroute(t_data *data)
 	char			rcv_packet[data->packetlen];
 	struct timeval	tv;
 	int				seq;
+	int				ret;
 
 	printf("ft_traceroute to %s (%s), %d hops max, %d bytes packets\n",
 	data->host, data->ip, NHOPS_MAX, PACKET_LEN);
 	packet = (t_packet *)calloc(1, data->packetlen);
 	if (!packet)
 		fatal_error(ENOMEM, NULL, 0, data);
-	seq = 0;
+	seq = 1;
 	for (int ttl = START_TLL; ttl <= NHOPS_MAX; ttl++)
 	{
 		for (int probe = 0; probe < NPROBES; probe++)
 		{
 			gettimeofday(&tv, NULL);
 			send_probe(data, packet, seq, ttl);
-			if (recv_reply(data, rcv_packet) == SUCCESS)
-				traceroute_output(rcv_packet);
-			else
-				printf(" *");
-			if (!ft_wait(tv, 1))
-				fatal_error(errno, "gettimeofday", 0, data);
-			;
+			ret = recv_reply(data, rcv_packet);
+			if (traceroute_output((t_packet *)rcv_packet, ttl, probe, ret, data))
+			{
+				printf("\n");
+				free(packet);
+				return ;
+			}
 			++seq;
 		}
 		printf("\n");

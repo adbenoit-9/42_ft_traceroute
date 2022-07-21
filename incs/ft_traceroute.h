@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:44:42 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/20 18:03:49 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/21 10:39:56 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,12 @@
 
 typedef struct s_packet
 {
-    // struct ip       ip;
-	struct udphdr   udp;
+	struct ip	ip;
+	union u_head
+	{
+		struct udphdr   udp;
+		struct icmp		icmp;
+	}	hdr;
 	u_char          seq;
 	u_char          ttl;
 	struct timeval  tv;
@@ -39,6 +43,7 @@ char	*ft_strerror(int error);
 int		ft_perror(const char *error, const char *fct);
 int		fatal_error(int error, const char *arg, const int len, t_data *data);
 t_data	*parser(char **arg, t_data *data);
+char	*icmp_strerror(int error);
 
 int		ft_strcmp(const char *s1, const char *s2);
 int		ft_isnumber(const char *str);
