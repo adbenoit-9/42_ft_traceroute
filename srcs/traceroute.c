@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:39:49 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/21 15:42:51 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/21 15:49:55 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	recv_reply(t_data *data, char *dest)
 	return (ETIMEDOUT);
 }
 
-int	traceroute_output(t_header	*packet, int ttl, int probe, int status, t_data *data)
+int	traceroute_output(t_header	*packet, int ttl, int probe, int status, t_data *data, double time)
 {
 	char	src[INET_ADDRSTRLEN];
 	char	dst[INET_ADDRSTRLEN];
@@ -94,9 +94,9 @@ int	traceroute_output(t_header	*packet, int ttl, int probe, int status, t_data *
 		if (!inet_ntop(AF_INET, &packet->ip.ip_dst, dst, INET_ADDRSTRLEN))
 			ft_perror(ft_strerror(errno), "inet_ntop");
 		if (probe == 0)
-			dprintf(STDOUT_FILENO, "%2d  %s (%s)  %s", ttl, src, src, "ok ");
+			dprintf(STDOUT_FILENO, "%2d  %s (%s)  %.3f ms ", ttl, src, src, time);
 		else
-			dprintf(STDOUT_FILENO, " ok ");
+			dprintf(STDOUT_FILENO, " %.3f ms ", time);
 		if (probe == 2 && !ft_strcmp(src, data->ip))
 			return (true);
 	}
@@ -114,7 +114,8 @@ void    traceroute(t_data *data)
 {
 	t_packet_data	*packet_data;
 	char			rcv_packet[data->packetlen];
-	struct timeval	tv;
+	struct timeval	before;
+	struct timeval	after;
 	int				seq;
 	int				ret;
 
@@ -130,12 +131,13 @@ void    traceroute(t_data *data)
 			fatal_error(errno, "setsockopt", 0, data);
 		for (int probe = 0; probe < NPROBES; probe++)
 		{
-			gettimeofday(&tv, NULL);
-
+			gettimeofday(&before, NULL);
 			send_probe(data, packet_data, seq, ttl);
 			ret = recv_reply(data, rcv_packet);
+			gettimeofday(&after, NULL);
 #ifndef DEBUG
-			if (traceroute_output((t_header *)rcv_packet, ttl, probe, ret, data))
+			if (traceroute_output((t_header *)rcv_packet, ttl, probe, ret, data,
+					tv_to_ms(after) - tv_to_ms(before)))
 			{
 				printf("\n");
 				free(packet_data);

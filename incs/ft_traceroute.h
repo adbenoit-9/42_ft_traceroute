@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:44:42 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/21 15:11:27 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/21 15:48:13 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ t_data		init_data(void);
 t_data		*setup_address(t_data *data);
 t_data		*setup_socket(t_data *data);
 int			ft_wait(struct timeval start_time, size_t nb_sec);
+double		tv_to_ms(struct timeval t);
 
 void	debug_icmp(struct icmp icmphdr);
 void	debug_packet(t_packet_data packet);
