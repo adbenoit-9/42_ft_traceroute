@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:44:42 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/21 12:30:57 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/21 15:11:27 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,26 @@
 
 # include "defs.h"
 
-typedef struct s_packet
+typedef	struct s_header
 {
-	// struct ip	ip;
-	union u_head
-	{
-		struct udphdr   udp;
-		struct s_reply {
-			struct ip	ip;
-			struct icmp	icmp;
-			
-		}	reply;
-	}	hdr;
+	struct ip		ip;
+	struct icmp		icmp;
+	struct udphdr   udp;
+}				t_header;
+
+typedef struct s_packet_data
+{
 	u_char          seq;
 	u_char          ttl;
 	struct timeval  tv;
-}	t_packet;
+}	t_packet_data;
 
 typedef struct s_data
 {
     char            *host;
     char            ip[INET_ADDRSTRLEN];
     int             packetlen;
+	struct addrinfo	*addrinfo;
 	struct sockaddr	sockaddr;
 	int				sndsock;
 	int				rcvsock;
@@ -61,11 +59,11 @@ void    traceroute(t_data *data);
 t_data		init_data(void);
 t_data		*setup_address(t_data *data);
 t_data		*setup_socket(t_data *data);
-t_packet	*setup_packet(t_data *data, t_packet *packet, int seq, int ttl);
 int			ft_wait(struct timeval start_time, size_t nb_sec);
 
 void	debug_icmp(struct icmp icmphdr);
-void	debug_packet(t_packet packet);
+void	debug_packet(t_packet_data packet);
 void	debug_ip(struct ip iphdr);
+void	debug_udp(struct udphdr udp);
 
 #endif
