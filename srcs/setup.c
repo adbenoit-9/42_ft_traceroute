@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 18:45:13 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/21 12:38:38 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/21 12:41:17 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,14 @@ t_data	*setup_address(t_data *data)
 
 t_data	*setup_socket(t_data *data)
 {
-	int	hdrincl;
+	// int	hdrincl;
 
-	hdrincl = 1;
-	data->sndsock = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);
+	// hdrincl = 1;
+	data->sndsock = socket(AF_INET, SOCK_RAW, IPPROTO_UDP);
 	if (data->sndsock == -1)
 		fatal_error(errno, "socket", 0, data);
-	if (setsockopt(data->sndsock, IPPROTO_IP, IP_HDRINCL, &hdrincl, sizeof(hdrincl)) == -1)
-		fatal_error(errno, "setsockopt", 0, data);
+	// if (setsockopt(data->sndsock, IPPROTO_IP, IP_HDRINCL, &hdrincl, sizeof(hdrincl)) == -1)
+	// 	fatal_error(errno, "setsockopt", 0, data);
 	data->rcvsock = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
 	if (data->rcvsock == -1)
 		fatal_error(errno, "socket", 0, data);
