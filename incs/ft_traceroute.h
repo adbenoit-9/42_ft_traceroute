@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:44:42 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/21 10:39:56 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/21 12:30:57 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,15 @@
 
 typedef struct s_packet
 {
-	struct ip	ip;
+	// struct ip	ip;
 	union u_head
 	{
 		struct udphdr   udp;
-		struct icmp		icmp;
+		struct s_reply {
+			struct ip	ip;
+			struct icmp	icmp;
+			
+		}	reply;
 	}	hdr;
 	u_char          seq;
 	u_char          ttl;

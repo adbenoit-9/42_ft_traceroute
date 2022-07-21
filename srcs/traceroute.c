@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:39:49 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/21 11:13:54 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/21 12:37:51 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	recv_reply(t_data *data, char *dest)
 			debug_ip(ip);
 			debug_icmp(*(struct icmp *)(dest + sizeof(struct ip)));
 		}
-		if (((t_packet *)dest)->hdr.icmp.icmp_type != 0) {
+		if (((t_packet *)dest)->hdr.reply.icmp.icmp_type != 0) {
 			printf("%s[error] %s%s\n", S_RED, S_NONE,
 				icmp_strerror(((struct icmp *)(dest + sizeof(struct ip)))->icmp_type));
 		}
@@ -71,9 +71,6 @@ int	recv_reply(t_data *data, char *dest)
 		return (SUCCESS);
 	}
 	else {
-#ifdef DEBUG
-		printf("%s[timeout]%s\n", S_RED, S_NONE);
-#endif
 		FD_CLR(data->rcvsock, &fds);
 		FD_CLR(data->rcvsock, &err);
 		return (ETIMEDOUT);
@@ -86,9 +83,9 @@ int	traceroute_output(t_packet	*packet, int ttl, int probe, int status, t_data *
 	char	dst[INET_ADDRSTRLEN];
 
 	if (status == SUCCESS) {
-		if (!inet_ntop(AF_INET, &packet->ip.ip_src, src, INET_ADDRSTRLEN))
+		if (!inet_ntop(AF_INET, &packet->hdr.reply.ip.ip_src, src, INET_ADDRSTRLEN))
 			ft_perror(ft_strerror(errno), "inet_ntop");
-		if (!inet_ntop(AF_INET, &packet->ip.ip_dst, dst, INET_ADDRSTRLEN))
+		if (!inet_ntop(AF_INET, &packet->hdr.reply.ip.ip_dst, dst, INET_ADDRSTRLEN))
 			ft_perror(ft_strerror(errno), "inet_ntop");
 		if (probe == 0)
 			dprintf(STDOUT_FILENO, "%2d  %s (%s)  %s", ttl, src, src, "ok ");
@@ -123,24 +120,28 @@ void    traceroute(t_data *data)
 	seq = 1;
 	for (int ttl = START_TLL; ttl <= NHOPS_MAX; ttl++)
 	{
+
+		// if (setsockopt(data->sndsock, SOL_SOCKET, IP_TTL, &ttl, sizeof(ttl)) == -1)
+		// 	fatal_error(errno, "setsockopt", 0, data);
 		for (int probe = 0; probe < NPROBES; probe++)
 		{
 			gettimeofday(&tv, NULL);
 			send_probe(data, packet, seq, ttl);
 			ret = recv_reply(data, rcv_packet);
+#ifndef DEBUG
 			if (traceroute_output((t_packet *)rcv_packet, ttl, probe, ret, data))
 			{
 				printf("\n");
 				free(packet);
 				return ;
 			}
+#else
+			if (ret != SUCCESS)
+				printf("%s[timeout]%s\n", S_RED, S_NONE);
+#endif
 			++seq;
 		}
 		printf("\n");
-		// si je mets IP_HDRINCL estce que je dois remplir iphdr a la mano ? non faut appeler bind
-		// if (setsockopt(data->sockfd, IPPROTO_IP, IP_HDRINCL, &ttl, sizeof(ttl)) == -1)
-		// 	fatal_error(errno, "setsockopt", 0, data);
-		// printf("%d\t\n", ttl);
 	}
 	free(packet);
 }
