@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:39:49 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/21 23:50:06 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/22 17:53:43 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@ void	send_probe(t_data *data, char *packet, int seq, int ttl)
 	((t_probe_packet *)packet)->seq = ++seq;
 	gettimeofday(&((t_probe_packet *)packet)->tv, NULL);
 	((struct sockaddr_in *)data->addrinfo->ai_addr)->sin_port = htons(UDP_PORT + seq);
-	sendto(data->sndsock, packet, sizeof(packet), 0, data->addrinfo->ai_addr,
-		data->addrinfo->ai_addrlen);
+	if (sendto(data->sndsock, packet, sizeof(packet), 0,
+			data->addrinfo->ai_addr, data->addrinfo->ai_addrlen) == -1)
+		ft_perror(ft_strerror(errno), "sendto");
 }
 
 int	recv_reply(t_data *data, char *dest)
@@ -94,14 +95,13 @@ void    traceroute(t_data *data)
 	int				seq;
 
 	printf("ft_traceroute to %s (%s), %d hops max, %d bytes packets\n",
-	data->host, data->ip, NHOPS_MAX, PACKET_LEN);
+	data->host, data->ip, NHOPS_MAX, data->packetlen);
 	probe_packet = calloc(1, data->packetlen);
 	if (!probe_packet)
 		fatal_error(ENOMEM, NULL, 0, data);
 	seq = 0;
 	for (int ttl = START_TLL; ttl <= NHOPS_MAX; ttl++)
 	{
-		bzero(data->lastip, INET_ADDRSTRLEN);
 		if (setsockopt(data->sndsock, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl)) == -1)
 			fatal_error(errno, "setsockopt", 0, data);
 		for (int probe = 0; probe < NPROBES; probe++)

@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:44:42 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/21 23:44:39 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/22 17:49:36 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ typedef struct s_data
 {
     char            *host;
     char            ip[INET_ADDRSTRLEN];
-    char            lastip[INET_ADDRSTRLEN];
     int             packetlen;
 	struct addrinfo	*addrinfo;
 	struct sockaddr	sockaddr;
