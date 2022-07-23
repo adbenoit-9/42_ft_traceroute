@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 17:45:31 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/21 12:36:37 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/23 14:37:19 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,13 @@
 # define TIMEOUT 5 // ou 3 ?
 # define UDP_PORT 33434
 # define START_TLL 1
+
+/*
+** -- Tarnsmission status --
+*/
+# define RWAIT 0b1000
+# define RTIMEDOUT 0b0100
+# define END 0b0010
 
 /*
 ** -- Exit codes --

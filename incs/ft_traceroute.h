@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:44:42 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/22 17:49:36 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/23 14:48:22 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ size_t	ft_strlen(const char *str);
 void	clear_data(t_data *data);
 int		print_usage(void);
 void    traceroute(t_data *data);
+int		recv_reply(t_data *data, char *dest);
+bool	check_reply(t_data *data, void *packet);
 
 t_data		init_data(void);
 t_data		*setup_address(t_data *data);
