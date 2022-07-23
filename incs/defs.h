@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 17:45:31 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/23 17:12:23 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/23 19:19:59 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,11 @@
 /*
 ** -- flags --
 */
-# define NB_FLAGS 4
-# define FLAGS "fmwq"
+# define NB_FLAGS 3
+# define FLAGS "fmq"
 # define FLAG_F 0x1000
 # define FLAG_M 0x0100
-# define FLAG_W 0x0010
-# define FLAG_Q 0x0001
+# define FLAG_Q 0x0010
 
 /*
 ** -- Tarnsmission status --

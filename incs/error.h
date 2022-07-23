@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 12:51:23 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/19 14:36:39 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/23 19:40:01 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # define EP_FAMILY 5
 # define EP_NONAME 8
 # define EP_BADVAL ELAST + 1
-# define EP_BADLEN ELAST + 2
+# define EP_OPTARG ELAST + 2
 # define EP_NODATA ELAST + 3
 # define EP_BADARG ELAST + 4
 # define EP_BADOPT ELAST + 5
@@ -33,8 +33,8 @@
 # define EP_NODATA_MSG "ft_traceroute: usage error: Destination address required\n"
 # define EP_BADARG_MSG  "ft_traceroute: invalid agument: '%s'\n"
 # define EP_BADVAL_MSG  "ft_traceroute: bad value for packet length: \"%s\"\n"
-# define EP_BADLEN_MSG  "ft_traceroute: packet length must be %s\n"
-# define EP_BADOPT_MSG "ft_traceroute: invalid option -- '%s'\n"
+# define EP_BADOPT_MSG "Bad option '-%s' (argc %d)\n"
+# define EP_OPTARG_MSG "Cannot handle `-%c' option with arg `%s' (argc %d)"
 # define EP_NOARG_MSG "ft_traceroute: option requires an argument -- '%s'\n"
 
 # ifndef OS

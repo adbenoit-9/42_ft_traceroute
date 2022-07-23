@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:44:42 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/23 17:11:38 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/23 19:23:45 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,10 @@ typedef struct s_data
 
 char	*ft_strerror(int error);
 int		ft_perror(const char *error, const char *fct);
-int		fatal_error(int error, const char *arg, const int len, t_data *data);
+int		fatal_error(int error, const char *arg, const int argc, t_data *data);
 t_data	*parser(char **arg, t_data *data);
 char	*icmp_strerror(int error);
+void	exit_error(char *str, t_data *data, int type);
 
 int		ft_strcmp(const char *s1, const char *s2);
 int		ft_isnumber(const char *str);

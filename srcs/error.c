@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 17:27:25 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/19 16:35:30 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/23 19:40:36 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,18 +94,19 @@ int	ft_perror(const char *error, const char *fct)
 	return (0);
 }
 
-int	fatal_error(int error, const char *arg, const int len, t_data *data)
+void	exit_error(char *str, t_data *data, int type)
+{
+	dprintf(STDERR_FILENO, "%s\n", str);
+	clear_data(data);
+	exit(type);
+}
+
+int	fatal_error(int error, const char *arg, const int argc, t_data *data)
 {
 	int			status;
 
 	switch (error)
 	{
-		case EP_BADLEN:
-			if (len <= 52)
-				dprintf(STDERR_FILENO, EP_BADLEN_MSG, "> 51");
-			else
-				dprintf(STDERR_FILENO, EP_BADLEN_MSG, "<= 32768");
-			break ;
 		case EP_BADVAL:
 			dprintf(STDERR_FILENO, EP_BADVAL_MSG, arg);
 			break ;
@@ -116,8 +117,7 @@ int	fatal_error(int error, const char *arg, const int len, t_data *data)
 			dprintf(STDERR_FILENO, EP_BADARG_MSG, arg);
 			break ;
 		case EP_BADOPT:
-			dprintf(STDERR_FILENO, EP_BADOPT_MSG, arg);
-			print_usage();
+			dprintf(STDERR_FILENO, EP_BADOPT_MSG, arg, argc);
 			break ;
 		case EP_NOARG:
 			dprintf(STDERR_FILENO, EP_NOARG_MSG, arg);
