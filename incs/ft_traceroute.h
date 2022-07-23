@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:44:42 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/23 15:05:44 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/23 17:11:38 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,16 @@ typedef struct s_probe_packet
 	struct timeval  tv;
 }	t_probe_packet;
 
+
+typedef	struct s_flag
+{
+	short				isset;
+	int					first_ttl;
+	int					max_ttl;
+	int					waittime;
+	int					nprobes;
+}				t_flag;
+
 typedef struct s_data
 {
     char            *host;
@@ -39,7 +49,8 @@ typedef struct s_data
 	int				sndsock;
 	int				rcvsock;
 	uint8_t			id;
-	int				status;
+	short			status;
+	t_flag			flag;
 }   t_data;
 
 char	*ft_strerror(int error);
@@ -56,8 +67,9 @@ size_t	ft_strlen(const char *str);
 void	clear_data(t_data *data);
 int		print_usage(void);
 void    traceroute(t_data *data);
-int		recv_reply(t_data *data, char *dest);
-bool	check_reply(t_data *data, void *packet, int seq);
+int		recv_packet(t_data *data, char *dest);
+bool	check_packet(t_data *data, void *packet, int seq);
+void	send_probe(t_data *data, char *packet, int seq, int ttl);
 
 t_data		init_data(void);
 t_data		*setup_address(t_data *data);

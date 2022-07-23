@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 17:45:31 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/23 14:55:20 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/23 17:12:23 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,21 @@
 # define NONE 0
 # define PACKET_LEN 60
 # define MAXPACKET 32768
-# define NPROBES 3
-# define NHOPS_MAX 30
-# define TIMEOUT 5 // ou 3 ?
 # define UDP_PORT 33434
-# define START_TLL 1
+# define FIRST_TTL 1
+# define MAX_TTL 30
+# define WAITTIME 5
+# define NPROBES 3
+
+/*
+** -- flags --
+*/
+# define NB_FLAGS 4
+# define FLAGS "fmwq"
+# define FLAG_F 0x1000
+# define FLAG_M 0x0100
+# define FLAG_W 0x0010
+# define FLAG_Q 0x0001
 
 /*
 ** -- Tarnsmission status --

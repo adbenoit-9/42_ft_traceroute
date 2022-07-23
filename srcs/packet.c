@@ -1,18 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   reply.c                                            :+:      :+:    :+:   */
+/*   packet.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 14:21:29 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/23 15:07:40 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/23 16:47:44 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_traceroute.h"
 
-int	recv_reply(t_data *data, char *dest)
+void	send_probe(t_data *data, char *packet, int seq, int ttl)
+{
+	((t_probe_packet *)packet)->ttl = ttl;
+	((t_probe_packet *)packet)->seq = ++seq;
+	gettimeofday(&((t_probe_packet *)packet)->tv, NULL);
+	((struct sockaddr_in *)data->addrinfo->ai_addr)->sin_port = htons(UDP_PORT + seq);
+	if (sendto(data->sndsock, packet, sizeof(packet), 0,
+			data->addrinfo->ai_addr, data->addrinfo->ai_addrlen) == -1)
+		ft_perror(ft_strerror(errno), "sendto");
+}
+
+int	recv_packet(t_data *data, char *dest)
 {
 	fd_set			fds;
 	int				ret;
@@ -20,7 +31,7 @@ int	recv_reply(t_data *data, char *dest)
 	struct timeval	timeout;
 	
 	ret = 0;
-	timeout.tv_sec = TIMEOUT;
+	timeout.tv_sec = WAITTIME;
 	timeout.tv_usec = 0;
 	addrlen = sizeof(data->sockaddr);
 	FD_ZERO(&fds);
@@ -49,7 +60,7 @@ int	recv_reply(t_data *data, char *dest)
     return (0);
 }
 
-bool	check_reply(t_data *data, void *packet, int seq)
+bool	check_packet(t_data *data, void *packet, int seq)
 {
 	t_header	*hdr;
 
