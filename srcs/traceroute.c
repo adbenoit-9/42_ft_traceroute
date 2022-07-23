@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:39:49 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/23 14:54:18 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/23 15:17:00 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ void	send_probe(t_data *data, char *packet, int seq, int ttl)
 		ft_perror(ft_strerror(errno), "sendto");
 }
 
-int	traceroute_output(t_header	*packet, int ttl, int probe, t_data *data)
+int	traceroute_output(void	*packet, int ttl, int probe, t_data *data,
+		struct timeval send_time)
 {
 	char			src[INET_ADDRSTRLEN];
 	static char 	tmp[INET_ADDRSTRLEN];
@@ -31,9 +32,9 @@ int	traceroute_output(t_header	*packet, int ttl, int probe, t_data *data)
 	double			time;
 
 	gettimeofday(&tv, NULL);
-	time = tv_to_ms(tv) - tv_to_ms(((t_probe_packet *)(packet + sizeof(t_header)))->tv);
+	time = tv_to_ms(tv) - tv_to_ms(send_time);
 	if (!(data->status & RTIMEDOUT)) {
-		if (!inet_ntop(AF_INET, &packet->ip.ip_src, src, INET_ADDRSTRLEN))
+		if (!inet_ntop(AF_INET, &((t_header *)packet)->ip.ip_src, src, INET_ADDRSTRLEN))
 			ft_perror(ft_strerror(errno), "inet_ntop");
 		if (probe == 0)
 			dprintf(STDOUT_FILENO, "%2d  %s (%s)  %.3f ms ", ttl, src, src, time);
@@ -57,9 +58,9 @@ int	traceroute_output(t_header	*packet, int ttl, int probe, t_data *data)
 
 void    traceroute(t_data *data)
 {
-	char			*probe_packet;
-	char			rcv_packet[data->packetlen];
-	int				seq;
+	char	*probe_packet;
+	char	rcv_packet[data->packetlen];
+	int		seq;
 
 	printf("ft_traceroute to %s (%s), %d hops max, %d bytes packets\n",
 	data->host, data->ip, NHOPS_MAX, data->packetlen);
@@ -77,9 +78,10 @@ void    traceroute(t_data *data)
 			data->status = RWAIT;
 			while (data->status & RWAIT) {
 				recv_reply(data, rcv_packet);
-				check_reply(data, rcv_packet);
+				check_reply(data, rcv_packet, seq);
 			}
-			if (traceroute_output((t_header *)rcv_packet, ttl, probe, data))
+			if (traceroute_output(rcv_packet, ttl, probe, data,
+					((t_probe_packet *)(probe_packet))->tv))
 				data->status |= END;
 		}
 		printf("\n");

@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 14:21:29 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/23 14:48:36 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/23 15:07:40 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	recv_reply(t_data *data, char *dest)
     return (0);
 }
 
-bool	check_reply(t_data *data, void *packet)
+bool	check_reply(t_data *data, void *packet, int seq)
 {
 	t_header	*hdr;
 
@@ -58,7 +58,8 @@ bool	check_reply(t_data *data, void *packet)
 		return (true);	
 	}
 	hdr = (t_header *)packet;
-	if (hdr->ip.ip_id != data->id)
+	if (ntohs(hdr->udp.uh_sport) != data->id ||
+			ntohs(hdr->udp.uh_dport) != UDP_PORT + seq + 1)
 		return (false);
 	data->status &= ~RWAIT;
 	return (true);	
