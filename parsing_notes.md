@@ -42,6 +42,8 @@ $ traceroute  -m 0 localhost
 first hop out of range
 $ traceroute  -f 0 localhost
 first hop out of range
+$ traceroute -1               
+Bad option `-1' (argc 1)
 ```
 
 packetlen : min = 28, max = 65000
