@@ -14,10 +14,18 @@
 
 int		print_usage(void)
 {
-	printf("\nUsage:\n ./ft_traceroute [option] host [packetlen]\n");
-	printf("\nOptions:\n");
-	printf("--help              print help and exit\n");
-	printf("\n");
+	printf("Usage:\n  ./ft_traceroute [option] host [packetlen]\n");
+	printf("Options:\n");
+	printf("  -f first_tt           Start from the first_ttl hop (instead from 1)\n");
+	printf("  -m max_ttl            Set the max number of hops (max TTL to be\n");
+    printf("                        reached). Default is 30\n");
+	printf("  -q nqueries           Set the number of probes per each hop. Default is 3\n");
+	printf("  --help                Read this help and exit\n");
+	printf("\nAguments:\n");
+	printf("+     host          The host to traceroute to\n");
+	printf("      packetlen     The full packet length (default is the length of an IP\n");
+	printf("                    header plus 40). Can be ignored or increased to a minimal\n");
+	printf("                    allowed value\n");
 	return (0);
 }
 
