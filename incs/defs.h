@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 17:45:31 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/24 18:55:14 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/24 19:58:54 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@
 ** -- flags --
 */
 # define NB_FLAGS 3
-# define FLAG_LST {"f", "m", "q", "-first", "-max-hops", "-sim-queries"}
+# define FLAG_LST {"f", "m", "q", "-first", "-max-hops", "-queries"}
 # define FLAG_F 0x1000
 # define FLAG_M 0x0100
 # define FLAG_Q 0x0010
