@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 17:45:31 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/24 16:56:32 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/24 18:55:14 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@
 
 # define DEBUG_LVL 2
 # define NONE 0
-# define PACKET_LEN 60
+# define PACKET_LEN sizeof(struct ip) + 40
 # define MAXPACKET 32768
 # define UDP_PORT 33434
 # define FIRST_TTL 1
 # define MAX_TTL 30
 # define WAITTIME 5
-# define NPROBES 3
-# define HDR_SIZE sizeof(struct ip) + sizeof(struct icmp) + sizeof(struct udphdr)
+# define NQUERIES 3
+# define HDR_SIZE sizeof(t_header)
 
 /*
 ** -- flags --

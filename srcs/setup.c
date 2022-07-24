@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 18:45:13 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/24 18:49:25 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/24 18:53:00 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_data	init_data(void)
 	data.status = NONE;
 	data.first_ttl = FIRST_TTL;
 	data.max_ttl = MAX_TTL;
-	data.nprobes = NPROBES;
+	data.nqueries = NQUERIES;
 	data.id = (getpid() & 0xffff) | 0x8000;
 	bzero(&data.sockaddr, sizeof(data.sockaddr));
 	return (data);

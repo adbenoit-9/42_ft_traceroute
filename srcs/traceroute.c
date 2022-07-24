@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:39:49 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/24 16:44:28 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/24 19:00:19 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ void    traceroute(t_data *data)
 
 	printf("ft_traceroute to %s (%s), %d hops max, %d bytes packets\n",
 	data->host, data->ip, MAX_TTL, data->packetlen);
-	datagram = calloc(1, data->packetlen);
+	printf("size = %ld | dgram size = %ld\n", data->packetlen - sizeof(struct ip), sizeof(struct timeval));
+	datagram = calloc(1, data->packetlen - sizeof(struct ip));
 	if (!datagram)
 		fatal_error(ENOMEM, NULL, 0, data);
 	seq = 0;
@@ -61,7 +62,7 @@ void    traceroute(t_data *data)
 	{
 		if (setsockopt(data->sndsock, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl)) == -1)
 			fatal_error(errno, "setsockopt", 0, data);
-		for (int probe = 0; probe < data->nprobes; probe++)
+		for (int probe = 0; probe < data->nqueries; probe++)
 		{
 			send_probe(data, datagram, seq, ttl);
 			data->status = RWAIT;

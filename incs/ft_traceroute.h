@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:44:42 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/24 18:43:35 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/24 18:53:11 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct s_data
 	short			status;
 	int				first_ttl;
 	int				max_ttl;
-	int				nprobes;
+	int				nqueries;
 }   t_data;
 
 char	*ft_strerror(int error);

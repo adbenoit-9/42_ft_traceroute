@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 17:27:25 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/24 18:21:50 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/24 19:10:58 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,13 @@ char	*ft_strerror(int error)
 int	ft_perror(const char *error, const char *fct)
 {
 	if (!error && fct)
-		dprintf(STDERR_FILENO, "ft_traceroute: %s: unknown error\n", fct);
+		dprintf(STDERR_FILENO, "%s: unknown error\n", fct);
 	else if (!error)
-		dprintf(STDERR_FILENO, "ft_traceroute: unknown error\n");
+		dprintf(STDERR_FILENO, "unknown error\n");
 	else if (fct)
-		dprintf(STDERR_FILENO, "ft_traceroute: %s: %s\n", fct, error);
+		dprintf(STDERR_FILENO, "%s: %s\n", fct, error);
 	else
-		dprintf(STDERR_FILENO, "ft_traceroute: %s\n", error);
+		dprintf(STDERR_FILENO, "%s\n", error);
 	return (0);
 }
 

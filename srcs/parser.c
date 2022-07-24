@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 14:42:56 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/24 18:49:51 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/24 18:55:32 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static void	set_option_value(const char *str, int flag, int i, t_data *data)
 	case FLAG_Q:
 		if (opt < 1 || opt > 10)
 			exit_error("no more than 10 probes per hop", data, USAGE_ERR);
-		data->nprobes = opt;
+		data->nqueries = opt;
 		break;
 	default:
 		break;
