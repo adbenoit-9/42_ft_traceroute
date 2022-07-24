@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 17:27:25 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/24 17:15:26 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/24 18:21:50 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,11 +116,13 @@ int	fatal_error(int error, const char *arg, const int argc, t_data *data)
 		case ET_BADOPT:
 			dprintf(STDERR_FILENO, ET_BADOPT_MSG, arg, argc);
 			break ;
-		case ET_MULHOST:
-			print_usage();
+		case ET_EXTRAARG:
+			dprintf(STDERR_FILENO, ET_EXTRAARG_MSG, arg, argc);
 			break ;
 		default :
 			ft_perror(ft_strerror(error), arg);
+			if (error == ET_NONAME)
+				dprintf(STDERR_FILENO, ET_NONAME_MSG, arg, argc);
 			break ;
 	}
 	if (data)

@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 18:45:13 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/24 17:15:26 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/24 18:40:39 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,29 +42,32 @@ void	clear_data(t_data *data)
 		close(data->rcvsock);
 }
 
-t_data	*setup_address(t_data *data)
+int	setup_host(char **arg, int i, t_data *data)
 {
 	struct addrinfo	hints;
 	struct addrinfo	*res;
 	struct in_addr	src;
 	int				ret;
 
+	data->host = ft_strdup(arg[i]);
+	if (!data->host)
+		fatal_error(ENOMEM, NULL, 0, data);
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_INET;
 	hints.ai_flags = 0;
 	ret = getaddrinfo(data->host, NULL, &hints, &res);
 	if (ret == EAI_FAMILY)
-		fatal_error(ET_FAMILY, data->host, 0, data);
+		fatal_error(ET_FAMILY, arg[i], i + 1, data);
 	else if (ret == EAI_NODATA)
-		fatal_error(ET_NOHOST, data->host, 0, data);
+		fatal_error(ET_NOHOST, arg[i], i + 1, data);
 	else if (ret != 0)
-		fatal_error(ET_NONAME, data->host, 0, data);
+		fatal_error(ET_NONAME, arg[i], i + 1, data);
 	memcpy(&data->sockaddr, res->ai_addr, sizeof(struct sockaddr));
 	src = ((struct sockaddr_in *)res->ai_addr)->sin_addr;
 	if (!inet_ntop(AF_INET, &src, data->ip, INET_ADDRSTRLEN))
 		fatal_error(errno, data->host, 0, data);
 	data->addrinfo = res;
-	return (data);
+	return (SUCCESS);
 }
 
 t_data	*setup_socket(t_data *data)

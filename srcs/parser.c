@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 14:42:56 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/24 17:19:54 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/24 18:42:54 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,13 @@ static int	set_option(char *option, int index, t_data *data)
 
 t_data	*parser(char **arg, t_data *data)
 {
-	int		packetlen;
+	int		ipcklen;
+	int		ihost;
 	int		flag;
-	size_t i;
+	size_t	i;
 
-	packetlen = -1;
+	ipcklen = -1;
+	ihost = -1;
 	flag = -1;
 	for (i = 0; arg[i]; i++)
 	{
@@ -117,21 +119,20 @@ t_data	*parser(char **arg, t_data *data)
 			flag = set_option(arg[i] + 1, i, data);
 			continue ;
 		}
-		else if (!data->host) {
-			data->host = ft_strdup(arg[i]);
-			if (!data->host)
-				fatal_error(ENOMEM, NULL, 0, data);
+		else if (ihost == -1) {
+			ihost = i;
 		}
-		else if (data->host && packetlen == -1)
-			packetlen = get_packetlen(arg[i], data, i);
+		else if (ihost != -1 && ipcklen == -1)
+			ipcklen = i;
 		else
-			fatal_error(ET_MULHOST, NULL, 0, data);
+			fatal_error(ET_EXTRAARG, arg[i], i + 1, data);
 		flag = -1;
 	}
 	if (flag != -1)
 		flag_error(ET_NOARG, flag, i, NULL, data);
-	else if (!data->host)
+	else if (ihost == -1)
 		fatal_error(ET_NOHOST, NULL, 0, data);
-	data->packetlen = packetlen == -1 ? PACKET_LEN : packetlen;
+	setup_host(arg, ihost, data);
+	data->packetlen = !ipcklen ? PACKET_LEN : get_packetlen(arg[ipcklen], data, ipcklen);
 	return (data);
 }

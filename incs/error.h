@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 12:51:23 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/24 17:15:26 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/24 18:21:54 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,23 @@
 # define ET_FAMILY 5
 # define ET_NONAME 8
 # define ET_BADVAL ELAST + 1
-# define ET_OPTARG ELAST + 2
-# define ET_NOHOST ELAST + 3
-# define ET_BADARG ELAST + 4
-# define ET_BADOPT ELAST + 5
-# define ET_NOARG ELAST + 6
-# define ET_MULHOST ELAST + 7
+# define ET_NOHOST ELAST + 2
+# define ET_BADARG ELAST + 3
+# define ET_BADOPT ELAST + 4
+# define ET_NOARG ELAST + 5
+# define ET_EXTRAARG ELAST + 6
 
 /*
 ** -- Error messages --
 */
 
+# define ET_NONAME_MSG "Cannot handle \"host\" cmdline arg `%s' on position 1 (argc %d)\n"
 # define ET_NOHOST_MSG "Specify \"host\" missing argument.\n"
 # define ET_BADVAL_MSG  "Cannot handle \"packetlen\" cmdline arg `%s' on position 2 (argc %d)\n"
 # define ET_BADOPT_MSG "Bad option `-%s' (argc %d)\n"
 # define ET_BADARG_MSG "Cannot handle `-%s' option with arg `%s' (argc %d)"
 # define ET_NOARG_MSG "Option `-%s' (argc %d) requires an argument: `%s'"
+# define ET_EXTRAARG_MSG "Extra arg `%s' (position 3, argc %d)\n"
 
 # ifndef OS
 
