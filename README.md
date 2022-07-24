@@ -13,7 +13,7 @@ $ ./ft_traceroute [options] host [packetlen]
 ### Description
 
 <p style="margin: 0px; margin-top: 1em; margin-bottom: 1.5em;margin-left: 1em">
-Print the route packets trace to network host
+Print the route packets trace to network host.
 </p>
 
 ### Arguments
