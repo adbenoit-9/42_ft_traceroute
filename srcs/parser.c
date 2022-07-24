@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 14:42:56 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/24 18:42:54 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/24 18:49:51 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ t_data	*parser(char **arg, t_data *data)
 	else if (ihost == -1)
 		fatal_error(ET_NOHOST, NULL, 0, data);
 	setup_host(arg, ihost, data);
-	data->packetlen = !ipcklen ? PACKET_LEN : get_packetlen(arg[ipcklen], data, ipcklen);
+	if (ipcklen != -1)
+		data->packetlen = get_packetlen(arg[ipcklen], data, ipcklen);
 	return (data);
 }

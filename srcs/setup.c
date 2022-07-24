@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 18:45:13 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/24 18:40:39 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/24 18:49:25 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_data	init_data(void)
 
 	data.host = NULL;
 	data.addrinfo = NULL;
-	data.packetlen = -1;
+	data.packetlen = PACKET_LEN;
 	bzero(data.ip, INET_ADDRSTRLEN);
 	data.sndsock = -1;
 	data.rcvsock = -1;
