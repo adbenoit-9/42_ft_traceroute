@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:39:49 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/24 19:00:19 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/24 20:03:17 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ void    traceroute(t_data *data)
 
 	printf("ft_traceroute to %s (%s), %d hops max, %d bytes packets\n",
 	data->host, data->ip, MAX_TTL, data->packetlen);
-	printf("size = %ld | dgram size = %ld\n", data->packetlen - sizeof(struct ip), sizeof(struct timeval));
-	datagram = calloc(1, data->packetlen - sizeof(struct ip));
+	datagram = calloc(1, data->packetlen); // should be - size of ip header but 8 bytes < sizeof datagram
 	if (!datagram)
 		fatal_error(ENOMEM, NULL, 0, data);
 	seq = 0;
