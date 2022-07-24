@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:43:07 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/21 10:32:13 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/24 16:16:51 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	main(int ac, char **av)
 	t_data	data;
 
 	if (ac == 1)
-		fatal_error(EP_NODATA, NULL, 0, NULL);
+		exit(print_usage());
 	data = init_data();
 	parser(av + 1, &data);
 	setup_address(&data);

@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:44:42 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/23 19:23:45 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/24 16:44:06 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,12 @@ typedef	struct s_header
 	struct udphdr   udp;
 }				t_header;
 
-typedef struct s_probe_packet
+typedef struct s_datagram
 {
 	u_char          seq;
 	u_char          ttl;
 	struct timeval  tv;
-}	t_probe_packet;
-
-
-typedef	struct s_flag
-{
-	short				isset;
-	int					first_ttl;
-	int					max_ttl;
-	int					waittime;
-	int					nprobes;
-}				t_flag;
+}	t_datagram;
 
 typedef struct s_data
 {
@@ -50,7 +40,9 @@ typedef struct s_data
 	int				rcvsock;
 	uint8_t			id;
 	short			status;
-	t_flag			flag;
+	int				first_ttl;
+	int				max_ttl;
+	int				nprobes;
 }   t_data;
 
 char	*ft_strerror(int error);
@@ -79,7 +71,7 @@ int			ft_wait(struct timeval start_time, size_t nb_sec);
 double		tv_to_ms(struct timeval t);
 
 void	debug_icmp(struct icmp icmphdr);
-void	debug_packet(t_probe_packet packet);
+void	debug_packet(t_datagram packet);
 void	debug_ip(struct ip iphdr);
 void	debug_udp(struct udphdr udp);
 

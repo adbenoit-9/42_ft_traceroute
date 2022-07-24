@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 17:27:25 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/23 19:40:36 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/24 17:15:26 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 char	*ft_strerror(int error)
 {
 	char	*msg_err[] = {EPERM_MSG, ENOENT_MSG, ESRCH_MSG, EINTR_MSG,
-		EP_FAMILY_MSG, ENXIO_MSG, E2BIG_MSG, NONAME_MSG, EBADF_MSG, ECHILD_MSG,
+		ET_FAMILY_MSG, ENXIO_MSG, E2BIG_MSG, NONAME_MSG, EBADF_MSG, ECHILD_MSG,
 		EDEADLK_MSG, ENOMEM_MSG, EACCES_MSG, EFAULT_MSG, EBUSY_MSG, EEXIST_MSG,
 		EXDEV_MSG, ENODEV_MSG, ENOTDIR_MSG, EISDIR_MSG, EINVAL_MSG, ENFILE_MSG,
 		EMFILE_MSG, ENOTTY_MSG, ETXTBSY_MSG, EFBIG_MSG, ENOSPC_MSG, ESPIPE_MSG,
@@ -50,7 +50,7 @@ char	*ft_strerror(int error)
 char	*ft_strerror(int error)
 {
 	char	*msg_err[] = {EPERM_MSG, ENOENT_MSG, ESRCH_MSG, EINTR_MSG,
-		EP_FAMILY_MSG, ENXIO_MSG, E2BIG_MSG, NONAME_MSG, EBADF_MSG, ECHILD_MSG,
+		ET_FAMILY_MSG, ENXIO_MSG, E2BIG_MSG, NONAME_MSG, EBADF_MSG, ECHILD_MSG,
 		EAGAIN_MSG, ENOMEM_MSG, EACCES_MSG, EFAULT_MSG, ENOTBLK_MSG, EBUSY_MSG,
 		EEXIST_MSG, EXDEV_MSG, ENODEV_MSG, ENOTDIR_MSG, EISDIR_MSG, EINVAL_MSG,
 		ENFILE_MSG, EMFILE_MSG, ENOTTY_MSG, ETXTBSY_MSG, EFBIG_MSG, ENOSPC_MSG,
@@ -107,23 +107,16 @@ int	fatal_error(int error, const char *arg, const int argc, t_data *data)
 
 	switch (error)
 	{
-		case EP_BADVAL:
-			dprintf(STDERR_FILENO, EP_BADVAL_MSG, arg);
+		case ET_BADVAL:
+			dprintf(STDERR_FILENO, ET_BADVAL_MSG, arg, argc);
 			break ;
-		case EP_NODATA:
-			dprintf(STDERR_FILENO, EP_NODATA_MSG);
+		case ET_NOHOST:
+			dprintf(STDERR_FILENO, ET_NOHOST_MSG);
 			break ;
-		case EP_BADARG:
-			dprintf(STDERR_FILENO, EP_BADARG_MSG, arg);
+		case ET_BADOPT:
+			dprintf(STDERR_FILENO, ET_BADOPT_MSG, arg, argc);
 			break ;
-		case EP_BADOPT:
-			dprintf(STDERR_FILENO, EP_BADOPT_MSG, arg, argc);
-			break ;
-		case EP_NOARG:
-			dprintf(STDERR_FILENO, EP_NOARG_MSG, arg);
-			print_usage();
-			break ;
-		case EP_MULHOST:
+		case ET_MULHOST:
 			print_usage();
 			break ;
 		default :
@@ -132,7 +125,7 @@ int	fatal_error(int error, const char *arg, const int argc, t_data *data)
 	}
 	if (data)
 		clear_data(data);
-	status = (error >= EP_NODATA) ? USAGE_ERR : ERROR;
+	status = (error >= ET_NOHOST) ? USAGE_ERR : ERROR;
 	exit(status);
 }
 

@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 14:21:29 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/23 16:47:44 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/24 15:24:01 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	send_probe(t_data *data, char *packet, int seq, int ttl)
 {
-	((t_probe_packet *)packet)->ttl = ttl;
-	((t_probe_packet *)packet)->seq = ++seq;
-	gettimeofday(&((t_probe_packet *)packet)->tv, NULL);
+	((t_datagram *)packet)->ttl = ttl;
+	((t_datagram *)packet)->seq = ++seq;
+	gettimeofday(&((t_datagram *)packet)->tv, NULL);
 	((struct sockaddr_in *)data->addrinfo->ai_addr)->sin_port = htons(UDP_PORT + seq);
 	if (sendto(data->sndsock, packet, sizeof(packet), 0,
 			data->addrinfo->ai_addr, data->addrinfo->ai_addrlen) == -1)
@@ -38,14 +38,14 @@ int	recv_packet(t_data *data, char *dest)
 	FD_SET(data->rcvsock, &fds);
 	ret = select(data->rcvsock + 1, &fds, NULL, NULL, &timeout);
 	if (ret) {
-		recvfrom(data->rcvsock, dest, 52, 0, &data->sockaddr, &addrlen);
+		recvfrom(data->rcvsock, dest, HDR_SIZE, 0, &data->sockaddr, &addrlen);
 #ifdef DEBUG
 		printf("%s[packet received]%s\n", S_GREEN, S_NONE);
 		if (DEBUG_LVL > 1) {
 			debug_ip(((t_header *)dest)->ip);
 			debug_icmp(((t_header *)dest)->icmp);
 			debug_udp(((t_header *)dest)->udp);
-			debug_packet(*(t_probe_packet *)(dest + sizeof(t_header)));
+			debug_packet(*(t_datagram *)(dest + sizeof(t_header)));
 		}
 		if (((t_header *)dest)->icmp.icmp_type != 0) {
 			printf("%s[error] %s%s\n", S_RED, S_NONE,

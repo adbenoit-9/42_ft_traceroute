@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 18:45:13 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/23 17:19:45 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/24 17:15:26 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,9 @@ t_data	init_data(void)
 	data.sndsock = -1;
 	data.rcvsock = -1;
 	data.status = NONE;
-	data.flag.isset = NONE;
-	data.flag.first_ttl = -1;
-	data.flag.max_ttl = -1;
-	data.flag.nprobes = -1;
-	data.flag.waittime = -1;
+	data.first_ttl = FIRST_TTL;
+	data.max_ttl = MAX_TTL;
+	data.nprobes = NPROBES;
 	data.id = (getpid() & 0xffff) | 0x8000;
 	bzero(&data.sockaddr, sizeof(data.sockaddr));
 	return (data);
@@ -56,11 +54,11 @@ t_data	*setup_address(t_data *data)
 	hints.ai_flags = 0;
 	ret = getaddrinfo(data->host, NULL, &hints, &res);
 	if (ret == EAI_FAMILY)
-		fatal_error(EP_FAMILY, data->host, 0, data);
+		fatal_error(ET_FAMILY, data->host, 0, data);
 	else if (ret == EAI_NODATA)
-		fatal_error(EP_NODATA, data->host, 0, data);
+		fatal_error(ET_NOHOST, data->host, 0, data);
 	else if (ret != 0)
-		fatal_error(EP_NONAME, data->host, 0, data);
+		fatal_error(ET_NONAME, data->host, 0, data);
 	memcpy(&data->sockaddr, res->ai_addr, sizeof(struct sockaddr));
 	src = ((struct sockaddr_in *)res->ai_addr)->sin_addr;
 	if (!inet_ntop(AF_INET, &src, data->ip, INET_ADDRSTRLEN))

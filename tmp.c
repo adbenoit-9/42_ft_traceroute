@@ -1,29 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   tmp.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 14:42:56 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/24 17:19:54 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/24 17:15:26 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_traceroute.h"
-
-static void	flag_error(int error, int flag, int index, const char *arg, t_data *data) {
-	char	*syntax[] = {"-f first_ttl", "-m max_ttl", "-q nqueries",
-		"--first=first_ttl", "--max-hops=max_ttl", "--queries=nqueries"};
-	char	*flag_lst[] = FLAG_LST;
-	char	str[4096];
-
-	if (error == ET_BADARG)
-		sprintf(str, ET_BADARG_MSG, flag_lst[flag], arg, index + 1);
-	else if (error == ET_NOARG)
-		sprintf(str, ET_NOARG_MSG, flag_lst[flag], index + 1, syntax[flag]);
-	exit_error(str, data, USAGE_ERR);
-}
 
 static int	get_packetlen(const char *str, t_data *data, int index)
 {
@@ -42,14 +29,37 @@ static int	get_packetlen(const char *str, t_data *data, int index)
 	return (packetlen);
 }
 
+static int	get_flag_value(char flag)
+{
+	int		values[] = {FLAG_F, FLAG_M, FLAG_Q};
+
+	for (size_t i = 0; i < NB_FLAGS; i++)
+		if (FLAGS[i] == flag)
+			return (values[i]);
+	return (-1);
+}
+
+static char	reverse_flag_value(int flag)
+{
+	int		values[] = {FLAG_F, FLAG_M, FLAG_Q};
+
+	for (size_t i = 0; i < NB_FLAGS; i++)
+		if (values[i] == flag)
+			return (FLAGS[i]);
+	return (0);
+}
+
 static void	set_option_value(const char *str, int flag, int i, t_data *data)
 {
 	int		opt;
+	char	error[4096];
 
-	if (!ft_isnumber(str) || !str[0])
-		flag_error(ET_BADARG, flag, i, str, data);
+	if (!ft_isnumber(str)) {
+		sprintf(error, ET_BADARG_MSG, reverse_flag_value(flag), str, i + 1);
+		exit_error(error, data, USAGE_ERR);
+	}
 	opt = atoi(str);
-	switch (flag % NB_FLAGS)
+	switch (flag)
 	{
 	case FLAG_F:
 		if (opt < 1 || opt > 64)
@@ -72,49 +82,63 @@ static void	set_option_value(const char *str, int flag, int i, t_data *data)
 	return ;
 }
 
-static int	set_option(char *option, int index, t_data *data)
+static int	set_flag(char *flags, t_data *data, int index)
 {
-	int		len;
-	char	*opt_lst[] = FLAG_LST;
+	int new_flag;
 
-	if (ft_strcmp(option, "-help") == 0)
+	new_flag = -1;
+	for (int i = 0; flags[i]; i++)
+	{
+		new_flag = get_flag_value(flags[i]);
+		if (new_flag == -1) {
+			flags[i + 1] = 0;
+			fatal_error(ET_BADOPT, flags + i, index + 1, data);
+		}
+		data->set |= new_flag;
+		if (flags[i + 1]) {
+			set_option_value(flags + i + 1, new_flag, index, data);
+			return (-1);
+		}
+	}
+	return (new_flag);
+}
+
+static void	set_option(char *option, int index, t_data *data)
+{
+	short	flag_val;
+	int		len;
+	char	*opt_lst[] = {"first=", "max-hops=", "sim-queries="};
+
+	if (ft_strcmp(option, "help") == 0)
 		exit(print_usage());
-	for (int i = 0; i < NB_FLAGS * 2; i++)
+	for (int i = 0; i < NB_FLAGS; i++)
 	{
 		len  = strlen(opt_lst[i]);
 		if (strncmp(option, opt_lst[i], len) == 0)
 		{
-			if (i > 2 && !option[len]) 
-				flag_error(ET_NOARG, i, index, NULL, data);
-			else if (i > 2 && option[len] != '=')
-				fatal_error(ET_BADOPT, option, index + 1, data);
-			else if (i > 2)
-				set_option_value(option + len + 1, i, index, data);
-			else if (option[len])
-				set_option_value(option + len, i, index, data);
-			else
-				return (i);
-			return (-1);
+			flag_val = get_flag_value('f');
+			set_option_value(option + len, flag_val, index, data);
+			return ;
 		}
 	}
 	fatal_error(ET_BADOPT, option, index + 1, data);
-	return (-1);
 }
 
 t_data	*parser(char **arg, t_data *data)
 {
 	int		packetlen;
 	int		flag;
-	size_t i;
 
 	packetlen = -1;
 	flag = -1;
-	for (i = 0; arg[i]; i++)
+	for (size_t i = 0; arg[i]; i++)
 	{
 		if (flag != -1)
 			set_option_value(arg[i], flag, i, data);
+		else if (strncmp(arg[i], "--", 2) == 0)
+			set_option(arg[i] + 2, i, data);
 		else if (arg[i][0] == '-') {
-			flag = set_option(arg[i] + 1, i, data);
+			flag = set_flag( arg[i] + 1, data, i);
 			continue ;
 		}
 		else if (!data->host) {
@@ -128,9 +152,7 @@ t_data	*parser(char **arg, t_data *data)
 			fatal_error(ET_MULHOST, NULL, 0, data);
 		flag = -1;
 	}
-	if (flag != -1)
-		flag_error(ET_NOARG, flag, i, NULL, data);
-	else if (!data->host)
+	if (!data->host)
 		fatal_error(ET_NOHOST, NULL, 0, data);
 	data->packetlen = packetlen == -1 ? PACKET_LEN : packetlen;
 	return (data);

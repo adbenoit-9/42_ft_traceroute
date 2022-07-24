@@ -6,13 +6,13 @@
 #    By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/28 16:29:13 by adbenoit          #+#    #+#              #
-#    Updated: 2022/07/23 15:18:51 by adbenoit         ###   ########.fr        #
+#    Updated: 2022/07/24 15:15:34 by adbenoit         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # COMPILATION
 CC		= gcc
-CFLAGS 	= -Wall -Wextra -Werror #-fsanitize=address -g3
+CFLAGS 	= -Wall -Wextra -Werror -fsanitize=address -g3
 IFLAGS 	= -I./incs
 
 UNAME	:= $(shell uname)

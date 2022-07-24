@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 17:45:31 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/23 19:19:59 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/24 16:56:32 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,13 @@
 # define MAX_TTL 30
 # define WAITTIME 5
 # define NPROBES 3
+# define HDR_SIZE sizeof(struct ip) + sizeof(struct icmp) + sizeof(struct udphdr)
 
 /*
 ** -- flags --
 */
 # define NB_FLAGS 3
-# define FLAGS "fmq"
+# define FLAG_LST {"f", "m", "q", "-first", "-max-hops", "-sim-queries"}
 # define FLAG_F 0x1000
 # define FLAG_M 0x0100
 # define FLAG_Q 0x0010
