@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:39:49 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/25 17:57:10 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/25 19:59:26 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,13 @@ void    traceroute(t_data *data)
 {
 	char			*udp_packet;
 	struct timeval	tv;
-	char			packet[HDR_SIZE];
+	char			packet[RECVLEN];
 	int				seq;
 	int				rcv_seq;
 
 	dprintf(STDOUT_FILENO, "ft_traceroute to %s (%s), %d hops max, %d bytes packets",
 	data->host, data->ip, MAX_TTL, data->packetlen);
-	udp_packet = calloc(1, data->packetlen - sizeof(struct ip));
+	udp_packet = calloc(1, SENDLEN);
 	if (!udp_packet)
 		fatal_error(ENOMEM, NULL, 0, data);
 	seq = 0;
@@ -92,7 +92,6 @@ void    traceroute(t_data *data)
 		for (int probe = 0; probe < data->nqueries; probe++)
 		{
 			data->status = PSENDING;
-			printf("sent seq: %d\n", seq + 1);
 			send_probe(data, udp_packet, ++seq);
 			if (ttl == data->max_ttl && probe == data->nqueries - 1)
 				data->status &= ~PSENDING;

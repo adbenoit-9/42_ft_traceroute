@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 17:45:31 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/25 17:20:35 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/25 20:33:54 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@
 # define MAX_TTL 30
 # define WAITTIME 5.0
 # define NQUERIES 3
-# define HDR_SIZE sizeof(t_header)
+# define SQUERIES 1
+# define RECVLEN sizeof(t_header)
+# define SENDLEN data->packetlen - sizeof(struct ip)
 
 /*
 ** -- flags --
