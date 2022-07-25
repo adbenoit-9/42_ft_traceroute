@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 14:21:29 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/25 16:49:30 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/25 17:45:03 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	send_probe(t_data *data, char *packet, int seq)
 {
-	if (seq == 16 || seq == (data->max_ttl - data->first_ttl) * data->nqueries)
+	if (seq % 16 == 0)
 		data->status &= ~PSENDING;
 	((struct udphdr *)packet)->uh_sport = htons(data->id);
 	((struct udphdr *)packet)->uh_dport = htons(UDP_PORT + seq);
@@ -43,9 +43,7 @@ int	recv_packet(t_data *data, char *dest)
 	addrlen = sizeof(data->sockaddr);
 	FD_ZERO(&fds);
 	FD_SET(data->rcvsock, &fds);
-	printf("yo\n");
 	ret = select(data->rcvsock + 1, &fds, NULL, NULL, &timeout);
-	printf("yo1\n");
 	if (ret) {
 		recvfrom(data->rcvsock, dest, HDR_SIZE, 0, &data->sockaddr, &addrlen);
 #ifdef DEBUG

@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 17:45:31 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/25 15:16:22 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/25 17:20:35 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 # include <sys/select.h>
 # include "error.h"
 
-# define DEBUG_LVL 2
+# define DEBUG_LVL 1
 # define NONE 0
 # define PACKET_LEN sizeof(struct ip) + 40
 # define MAXPACKET 32768

@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:39:49 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/25 16:52:03 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/25 17:57:10 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,23 @@ t_probe	get_probe_data(int seq, t_data *data) {
 	
 	probe_data.seq = seq;
 	probe_data.id = (seq - 1) % data->nqueries;
-	probe_data.ttl = (seq - 1) / probe_data.id + data->first_ttl;
+	probe_data.ttl = (seq - 1) / data->nqueries + data->first_ttl;
 	return (probe_data);
 }
 
-int	print_trace(void *packet, t_probe probe, t_data *data, double rtt)
+int	print_trace(void *packet, int seq, t_data *data, double rtt)
 {
 	char			src[INET_ADDRSTRLEN];
 	static char 	tmp[INET_ADDRSTRLEN];
+	t_probe			probe;
 
+	probe = get_probe_data(seq, data);
 	if (!(data->status & RTIMEDOUT) && rtt > -0.99) {
 		data->waittime = 3. * rtt > WAITTIME ? 3. * rtt : WAITTIME;
 		if (!inet_ntop(AF_INET, &((t_header *)packet)->ip.ip_src, src, INET_ADDRSTRLEN))
 			ft_perror(ft_strerror(errno), "inet_ntop");
 		if (probe.id == 0)
-			dprintf(STDOUT_FILENO, "%2d  %s (%s)  %.3f ms ", probe.ttl, src, src, rtt);
+			dprintf(STDOUT_FILENO, "\n%2d  %s (%s)  %.3f ms ", probe.ttl, src, src, rtt);
 		else if (strncmp(src, tmp, INET_ADDRSTRLEN) != 0)
 			dprintf(STDOUT_FILENO, " %s (%s) %.3f ms ", src, src, rtt);
 		else
@@ -41,7 +43,7 @@ int	print_trace(void *packet, t_probe probe, t_data *data, double rtt)
 			return (true);
 	}
 	else if (probe.id == 0) {
-		dprintf(STDOUT_FILENO, "%2d  *", probe.ttl);
+		dprintf(STDOUT_FILENO, "\n%2d  *", probe.ttl);
 	}
 	else {
 		dprintf(STDOUT_FILENO, " *");
@@ -53,23 +55,17 @@ int	output(void	*packet, int seq, t_data *data, struct timeval send_time)
 {
 	struct timeval	tv;
 	double			rtt;
-	t_probe			current;
-	t_probe			last = get_probe_data(seq, data);
+	static int		last_seq;
 
 	gettimeofday(&tv, NULL);
 	rtt = tv_to_ms(tv) - tv_to_ms(send_time);
-	current = get_probe_data(seq, data);
-#ifdef DEBUG
-	printf("current probe %d - ttl %d - seq %d\n", current.id, current.ttl, current.seq);
-	printf("last probe %d - ttl %d - seq %d\n", last.id, last.ttl, last.seq);
-#endif
-	if (current.seq < last.seq)
+	if (seq < last_seq)
 		return (false);
-	for (int i = last.seq; i < current.seq; i++) {
-		print_trace(packet, get_probe_data(i, data), data, -1);
+	for (int i = last_seq + 1; i < seq; i++) {
+		print_trace(packet, i, data, -1);
 	}
-	last = current;
-	return (print_trace(packet, current, data, rtt));
+	last_seq = seq;
+	return (print_trace(packet, seq, data, rtt));
 }
 
 void    traceroute(t_data *data)
@@ -80,7 +76,7 @@ void    traceroute(t_data *data)
 	int				seq;
 	int				rcv_seq;
 
-	printf("ft_traceroute to %s (%s), %d hops max, %d bytes packets\n",
+	dprintf(STDOUT_FILENO, "ft_traceroute to %s (%s), %d hops max, %d bytes packets",
 	data->host, data->ip, MAX_TTL, data->packetlen);
 	udp_packet = calloc(1, data->packetlen - sizeof(struct ip));
 	if (!udp_packet)
@@ -96,23 +92,23 @@ void    traceroute(t_data *data)
 		for (int probe = 0; probe < data->nqueries; probe++)
 		{
 			data->status = PSENDING;
+			printf("sent seq: %d\n", seq + 1);
 			send_probe(data, udp_packet, ++seq);
-			printf("seq = %d | %d\n", seq, data->status & PSENDING);
+			if (ttl == data->max_ttl && probe == data->nqueries - 1)
+				data->status &= ~PSENDING;
 			if (!(data->status & PSENDING)) {
 				data->status = RWAIT;
 				while (data->status & RWAIT) {
 					recv_packet(data, packet);
 					rcv_seq = parse_packet(data, packet, seq);
-					if (rcv_seq) {
+					if (rcv_seq)
 						if (output(packet, rcv_seq, data, tv))
 							data->status |= END;
-						exit(3);
-					}
 				}
 				gettimeofday(&tv, NULL);
 			}
 		}
-		printf("\n");
 	}
+	printf("\n");
 	free(udp_packet);
 }
