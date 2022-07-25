@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:44:42 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/24 18:53:11 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/25 14:58:31 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,6 @@ typedef	struct s_header
 	struct udphdr   udp;
 }				t_header;
 
-typedef struct s_datagram
-{
-	u_char          seq;
-	u_char          ttl;
-	struct timeval  tv;
-}	t_datagram;
-
 typedef struct s_data
 {
     char            *host;
@@ -43,6 +36,7 @@ typedef struct s_data
 	int				first_ttl;
 	int				max_ttl;
 	int				nqueries;
+	double			waittime;
 }   t_data;
 
 char	*ft_strerror(int error);
@@ -62,7 +56,7 @@ int		print_usage(void);
 void    traceroute(t_data *data);
 int		recv_packet(t_data *data, char *dest);
 bool	check_packet(t_data *data, void *packet, int seq);
-void	send_probe(t_data *data, char *packet, int seq, int ttl);
+void	send_probe(t_data *data, char *packet, int seq);
 
 t_data		init_data(void);
 int			setup_host(char **arg, int i, t_data *data);
@@ -71,7 +65,6 @@ int			ft_wait(struct timeval start_time, size_t nb_sec);
 double		tv_to_ms(struct timeval t);
 
 void	debug_icmp(struct icmp icmphdr);
-void	debug_packet(t_datagram packet);
 void	debug_ip(struct ip iphdr);
 void	debug_udp(struct udphdr udp);
 

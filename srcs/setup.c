@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 18:45:13 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/24 18:53:00 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/25 14:45:26 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ t_data	*setup_socket(t_data *data)
 	bzero(&from, sizeof(from));
 	from.sin_family = AF_INET;
 	from.sin_port = htons(data->id);
-	data->sndsock = socket(AF_INET, SOCK_DGRAM, 0);
+	data->sndsock = socket(AF_INET, SOCK_RAW, IPPROTO_UDP);
 	if (data->sndsock == -1)
 		fatal_error(errno, "socket", 0, data);
 	if (bind(data->sndsock, (struct sockaddr *)&from, sizeof(from)) == -1)

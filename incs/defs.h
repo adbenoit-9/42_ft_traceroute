@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 17:45:31 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/24 19:59:50 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/25 15:16:22 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@
 # define UDP_PORT 33434
 # define FIRST_TTL 1
 # define MAX_TTL 30
-# define WAITTIME 5
+# define WAITTIME 5.0
 # define NQUERIES 3
 # define HDR_SIZE sizeof(t_header)
 
@@ -62,6 +62,7 @@
 # define RWAIT 0b1000
 # define RTIMEDOUT 0b0100
 # define END 0b0010
+# define PSENDING 0b0001
 
 /*
 ** -- Exit codes --

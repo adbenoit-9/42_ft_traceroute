@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 11:54:29 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/24 15:24:01 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/25 14:58:23 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,4 @@ void	debug_udp(struct udphdr udp)
 	printf("port src: %d\n", udp.uh_sport);
 	printf("len: %d\n", udp.uh_ulen);
 	printf("sum: %d\n", udp.uh_sum);
-}
-
-void	debug_packet(t_datagram packet)
-{
-	printf("%s+++++ PACKET (size %ld) +++++%s\n", S_BLUE, sizeof(t_datagram), S_NONE);
-	printf("seq: %d\n", packet.seq);
-	printf("ttl: %d\n", packet.ttl);
-	printf("time: %lds %ldmicros\n", packet.tv.tv_sec, (size_t)packet.tv.tv_usec);
-	printf("%s+++++++++++++++++++++++++++++%s\n", S_BLUE, S_NONE);
 }
