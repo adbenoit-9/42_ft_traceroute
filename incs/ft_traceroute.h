@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:44:42 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/25 19:50:33 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/26 01:15:16 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int		ft_strcmp(const char *s1, const char *s2);
 int		ft_isnumber(const char *str);
 char	*ft_strdup(const char *s1);
 size_t	ft_strlen(const char *str);
+int		ft_isrealnumber(const char *str);
 
 void	clear_data(t_data *data);
 int		print_usage(void);

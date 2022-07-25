@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 12:51:23 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/24 18:21:54 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/26 01:38:51 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # define ET_BADOPT ELAST + 4
 # define ET_NOARG ELAST + 5
 # define ET_EXTRAARG ELAST + 6
+# define ET_TTLARG ELAST + 7
 
 /*
 ** -- Error messages --
@@ -36,6 +37,7 @@
 # define ET_BADARG_MSG "Cannot handle `-%s' option with arg `%s' (argc %d)"
 # define ET_NOARG_MSG "Option `-%s' (argc %d) requires an argument: `%s'"
 # define ET_EXTRAARG_MSG "Extra arg `%s' (position 3, argc %d)\n"
+# define ET_TTLARG_MSG "first ttl (%d) may not be greater than max ttl (%d)"
 
 # ifndef OS
 

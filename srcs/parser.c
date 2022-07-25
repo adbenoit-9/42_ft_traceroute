@@ -6,14 +6,14 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 14:42:56 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/24 18:55:32 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/26 01:41:13 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_traceroute.h"
 
 static void	flag_error(int error, int flag, int index, const char *arg, t_data *data) {
-	char	*syntax[] = {"-f first_ttl", "-m max_ttl", "-q nqueries",
+	char	*syntax[] = {"-f first_ttl", "-m max_ttl", "-q nqueries", "-w waittime",
 		"--first=first_ttl", "--max-hops=max_ttl", "--queries=nqueries"};
 	char	*flag_lst[] = FLAG_LST;
 	char	str[4096];
@@ -22,6 +22,10 @@ static void	flag_error(int error, int flag, int index, const char *arg, t_data *
 		sprintf(str, ET_BADARG_MSG, flag_lst[flag], arg, index + 1);
 	else if (error == ET_NOARG)
 		sprintf(str, ET_NOARG_MSG, flag_lst[flag], index + 1, syntax[flag]);
+	else if (error == ET_NOARG)
+		sprintf(str, ET_NOARG_MSG, flag_lst[flag], index + 1, syntax[flag]);
+	else if (error == ET_TTLARG)
+		sprintf(str, ET_TTLARG_MSG, data->first_ttl, data->max_ttl);
 	exit_error(str, data, USAGE_ERR);
 }
 
@@ -45,12 +49,19 @@ static int	get_packetlen(const char *str, t_data *data, int index)
 static void	set_option_value(const char *str, int flag, int i, t_data *data)
 {
 	int		opt;
+	double	wt;
 
-	if (!ft_isnumber(str) || !str[0])
+	if (!ft_isnumber(str) && (flag != FLAG_W || !ft_isrealnumber(str)))
 		flag_error(ET_BADARG, flag, i, str, data);
 	opt = atoi(str);
 	switch (flag % NB_FLAGS)
 	{
+	case FLAG_W:
+		wt = atof(str);
+		if (wt > 86400. || wt <= 0.)
+			exit_error("wait time cannot be more than 86400", data, USAGE_ERR);
+		data->waittime = wt;
+		break ;
 	case FLAG_F:
 		if (opt < 1 || opt > 64)
 			exit_error("first hop out of range", data, USAGE_ERR);
@@ -79,16 +90,16 @@ static int	set_option(char *option, int index, t_data *data)
 
 	if (ft_strcmp(option, "-help") == 0)
 		exit(print_usage());
-	for (int i = 0; i < NB_FLAGS * 2; i++)
+	for (int i = 0; i < NB_FLAGS * 2 - 1; i++)
 	{
 		len  = strlen(opt_lst[i]);
 		if (strncmp(option, opt_lst[i], len) == 0)
 		{
-			if (i > 2 && !option[len]) 
+			if (i >= NB_FLAGS && !option[len]) 
 				flag_error(ET_NOARG, i, index, NULL, data);
-			else if (i > 2 && option[len] != '=')
+			else if (i >= NB_FLAGS && option[len] != '=')
 				fatal_error(ET_BADOPT, option, index + 1, data);
-			else if (i > 2)
+			else if (i >= NB_FLAGS)
 				set_option_value(option + len + 1, i, index, data);
 			else if (option[len])
 				set_option_value(option + len, i, index, data);
@@ -135,5 +146,7 @@ t_data	*parser(char **arg, t_data *data)
 	setup_host(arg, ihost, data);
 	if (ipcklen != -1)
 		data->packetlen = get_packetlen(arg[ipcklen], data, ipcklen);
+	if (data->first_ttl > data->max_ttl)
+		flag_error(ET_TTLARG, NONE, NONE, NULL, data);
 	return (data);
 }

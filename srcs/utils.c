@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:35:48 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/16 16:10:23 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/26 01:20:53 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,41 @@ int	ft_isnumber(const char *str)
 	int	i;
 
 	i = 0;
+	if (!str[0])
+		return (false);
 	if (str[0] == '-' || str[0] == '+')
 		++i;
 	while (str[i])
 	{
 		if (!ft_isdigit(str[i]))
-			return (0);
+			return (false);
 		++i;
 	}
-	return (1);
+	return (true);
+}
+
+int	ft_isrealnumber(const char *str)
+{
+	int	i;
+	int count;
+
+	i = 0;
+	count = 0;
+	if (!str[0] || str[0] == '.')
+		return (false);
+	if (str[0] == '-' || str[0] == '+')
+		++i;
+	while (str[i])
+	{
+		if (str[i] == '.')
+			++count;
+		else if (!ft_isdigit(str[i]))
+			return (false);
+		if (count > 1)
+			return (false);
+		++i;
+	}
+	return (true);
 }
 
 char	*ft_strdup(const char *s1)

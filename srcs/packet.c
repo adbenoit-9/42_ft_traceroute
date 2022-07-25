@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 14:21:29 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/25 19:59:33 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/26 01:29:27 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	recv_packet(t_data *data, char *dest)
 	
 	ret = 0;
 	timeout.tv_sec = data->waittime;
-	timeout.tv_usec = (data->waittime / timeout.tv_sec) * 1000;
+	timeout.tv_usec = (data->waittime - timeout.tv_sec) * 1000;
 	addrlen = sizeof(data->sockaddr);
 	FD_ZERO(&fds);
 	FD_SET(data->rcvsock, &fds);

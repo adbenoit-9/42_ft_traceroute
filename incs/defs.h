@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 17:45:31 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/25 20:33:54 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/26 01:42:42 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,12 @@
 /*
 ** -- flags --
 */
-# define NB_FLAGS 3
-# define FLAG_LST {"f", "m", "q", "-first", "-max-hops", "-queries"}
+# define NB_FLAGS 4
+# define FLAG_LST {"f", "m", "q", "w", "-first", "-max-hops", "-queries"}
 # define FLAG_F 0
 # define FLAG_M 1
 # define FLAG_Q 2
+# define FLAG_W 3
 
 /*
 ** -- Tarnsmission status --

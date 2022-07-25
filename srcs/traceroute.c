@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:39:49 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/25 19:59:26 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/26 01:28:26 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	print_trace(void *packet, int seq, t_data *data, double rtt)
 
 	probe = get_probe_data(seq, data);
 	if (!(data->status & RTIMEDOUT) && rtt > -0.99) {
-		data->waittime = 3. * rtt > WAITTIME ? 3. * rtt : WAITTIME;
 		if (!inet_ntop(AF_INET, &((t_header *)packet)->ip.ip_src, src, INET_ADDRSTRLEN))
 			ft_perror(ft_strerror(errno), "inet_ntop");
 		if (probe.id == 0)
@@ -87,8 +86,7 @@ void    traceroute(t_data *data)
 	{
 		if (setsockopt(data->sndsock, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl)) == -1)
 			fatal_error(errno, "setsockopt", 0, data);
-		data->waittime = WAITTIME;
-			gettimeofday(&tv, NULL);
+		gettimeofday(&tv, NULL);
 		for (int probe = 0; probe < data->nqueries; probe++)
 		{
 			data->status = PSENDING;
