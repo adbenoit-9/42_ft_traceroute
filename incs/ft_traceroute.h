@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:44:42 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/25 14:58:31 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/25 16:44:04 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,13 @@ typedef	struct s_header
 	struct icmp		icmp;
 	struct udphdr   udp;
 }				t_header;
+
+typedef struct s_probe
+{
+	int seq;
+	int ttl;
+	int id;
+}				t_probe;
 
 typedef struct s_data
 {
@@ -55,7 +62,7 @@ void	clear_data(t_data *data);
 int		print_usage(void);
 void    traceroute(t_data *data);
 int		recv_packet(t_data *data, char *dest);
-bool	check_packet(t_data *data, void *packet, int seq);
+int		parse_packet(t_data *data, void *packet, int seq);
 void	send_probe(t_data *data, char *packet, int seq);
 
 t_data		init_data(void);

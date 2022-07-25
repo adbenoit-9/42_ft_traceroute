@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 14:21:29 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/25 15:17:32 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/25 16:49:30 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	send_probe(t_data *data, char *packet, int seq)
 			data->addrinfo->ai_addr, data->addrinfo->ai_addrlen) == -1)
 		ft_perror(ft_strerror(errno), "sendto");
 #ifdef DEBUG
-	printf("%s[packet received]%s\n", S_GREEN, S_NONE);
+	printf("%s[packet sent]%s\n", S_GREEN, S_NONE);
 	if (DEBUG_LVL > 1)
 		debug_udp((*(struct udphdr *)packet));
 #endif
@@ -43,7 +43,9 @@ int	recv_packet(t_data *data, char *dest)
 	addrlen = sizeof(data->sockaddr);
 	FD_ZERO(&fds);
 	FD_SET(data->rcvsock, &fds);
+	printf("yo\n");
 	ret = select(data->rcvsock + 1, &fds, NULL, NULL, &timeout);
+	printf("yo1\n");
 	if (ret) {
 		recvfrom(data->rcvsock, dest, HDR_SIZE, 0, &data->sockaddr, &addrlen);
 #ifdef DEBUG
@@ -66,13 +68,13 @@ int	recv_packet(t_data *data, char *dest)
     return (0);
 }
 
-bool	check_packet(t_data *data, void *packet, int seq)
+int	parse_packet(t_data *data, void *packet, int seq)
 {
 	t_header	*hdr;
 
 	if (data->status & RTIMEDOUT) {
 		data->status &= ~RWAIT;
-		return (true);	
+		return (seq);	
 	}
 	hdr = (t_header *)packet;
 	if (ntohs(hdr->udp.uh_dport) != UDP_PORT + seq ||
@@ -89,6 +91,7 @@ bool	check_packet(t_data *data, void *packet, int seq)
 #ifdef DEBUG
 	printf("packet [%sOK%s]\n", S_GREEN, S_NONE);
 #endif
-	data->status &= ~RWAIT;
-	return (true);	
+	if (ntohs(hdr->udp.uh_dport) - UDP_PORT == seq)
+		data->status &= ~RWAIT;
+	return (ntohs(hdr->udp.uh_dport) - UDP_PORT);	
 }
