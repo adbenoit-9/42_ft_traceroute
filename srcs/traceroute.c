@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:39:49 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/26 01:28:26 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/26 02:23:31 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,12 @@ int	print_trace(void *packet, int seq, t_data *data, double rtt)
 			ft_perror(ft_strerror(errno), "inet_ntop");
 		if (probe.id == 0)
 			dprintf(STDOUT_FILENO, "\n%2d  %s (%s)  %.3f ms ", probe.ttl, src, src, rtt);
-		else if (strncmp(src, tmp, INET_ADDRSTRLEN) != 0)
+		else if (ft_strncmp(src, tmp, INET_ADDRSTRLEN) != 0)
 			dprintf(STDOUT_FILENO, " %s (%s) %.3f ms ", src, src, rtt);
 		else
 			dprintf(STDOUT_FILENO, " %.3f ms ", rtt);
-		strncpy(tmp,src, INET_ADDRSTRLEN);
-		if (probe.id == 2 && strncmp(src, data->ip, INET_ADDRSTRLEN) == 0)
+		ft_strncpy(tmp,src, INET_ADDRSTRLEN);
+		if (probe.id == 2 && ft_strncmp(src, data->ip, INET_ADDRSTRLEN) == 0)
 			return (true);
 	}
 	else if (probe.id == 0) {
@@ -77,7 +77,7 @@ void    traceroute(t_data *data)
 
 	dprintf(STDOUT_FILENO, "ft_traceroute to %s (%s), %d hops max, %d bytes packets",
 	data->host, data->ip, MAX_TTL, data->packetlen);
-	udp_packet = calloc(1, SENDLEN);
+	udp_packet = ft_calloc(1, SENDLEN);
 	if (!udp_packet)
 		fatal_error(ENOMEM, NULL, 0, data);
 	seq = 0;

@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:44:42 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/26 01:15:16 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/26 02:21:51 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,12 @@ int		ft_isnumber(const char *str);
 char	*ft_strdup(const char *s1);
 size_t	ft_strlen(const char *str);
 int		ft_isrealnumber(const char *str);
+char	*ft_strncpy(char *dest, const char *src, size_t n);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+void	ft_bzero(void *s, size_t n);
+void	*ft_memset(void *b, int c, size_t len);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
+void	*ft_calloc(size_t count, size_t size);
 
 void	clear_data(t_data *data);
 int		print_usage(void);

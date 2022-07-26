@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:35:48 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/26 01:20:53 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/26 02:23:41 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,4 +102,89 @@ char	*ft_strdup(const char *s1)
 	}
 	copy[i] = '\0';
 	return (copy);
+}
+
+char	*ft_strncpy(char *dest, const char *src, size_t n)
+{
+	size_t	i;
+
+	if (dest == NULL || src == NULL)
+		return (dest);
+	i = 0;
+	while (src[i] && i < n)
+	{
+		dest[i] = src[i];
+		++i;
+	}
+	dest[i] = 0;
+	return (dest);
+}
+
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	unsigned int	i;
+
+	i = 0;
+	if (n == 0)
+		return (0);
+	while (s1[i] && s2[i] && i < n)
+	{
+		if (s1[i] != s2[i])
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		++i;
+	}
+	if (i != n)
+		return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+	return (0);
+}
+
+void	ft_bzero(void *s, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < n)
+	{
+		((unsigned char *)s)[i] = 0;
+		++i;
+	}
+}
+
+void	*ft_memset(void *b, int c, size_t len)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < len)
+	{
+		((unsigned char *)b)[i] = (unsigned char)c;
+		++i;
+	}
+	return (b);
+}
+
+void	*ft_memcpy(void *dst, const void *src, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	if (src == NULL && dst == NULL)
+		return (NULL);
+	while (i < n)
+	{
+		((unsigned char *)dst)[i] = ((unsigned char *)src)[i];
+		++i;
+	}
+	return (dst);
+}
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	char	*mem;
+
+	mem = (char *)malloc(count * size);
+	if (!mem)
+		return (0);
+	ft_bzero(mem, count * size);
+	return ((void *)mem);
 }

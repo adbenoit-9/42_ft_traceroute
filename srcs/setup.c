@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 18:45:13 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/26 01:30:36 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/26 02:23:22 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_data	init_data(void)
 	data.host = NULL;
 	data.addrinfo = NULL;
 	data.packetlen = PACKET_LEN;
-	bzero(data.ip, INET_ADDRSTRLEN);
+	ft_bzero(data.ip, INET_ADDRSTRLEN);
 	data.sndsock = -1;
 	data.rcvsock = -1;
 	data.status = NONE;
@@ -28,7 +28,7 @@ t_data	init_data(void)
 	data.nqueries = NQUERIES;
 	data.waittime = WAITTIME;
 	data.id = (getpid() & 0xffff) | 0x8000;
-	bzero(&data.sockaddr, sizeof(data.sockaddr));
+	ft_bzero(&data.sockaddr, sizeof(data.sockaddr));
 	return (data);
 }
 
@@ -53,7 +53,7 @@ int	setup_host(char **arg, int i, t_data *data)
 	data->host = ft_strdup(arg[i]);
 	if (!data->host)
 		fatal_error(ENOMEM, NULL, 0, data);
-	memset(&hints, 0, sizeof(hints));
+	ft_memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_INET;
 	hints.ai_flags = 0;
 	ret = getaddrinfo(data->host, NULL, &hints, &res);
@@ -63,7 +63,7 @@ int	setup_host(char **arg, int i, t_data *data)
 		fatal_error(ET_NOHOST, arg[i], i + 1, data);
 	else if (ret != 0)
 		fatal_error(ET_NONAME, arg[i], i + 1, data);
-	memcpy(&data->sockaddr, res->ai_addr, sizeof(struct sockaddr));
+	ft_memcpy(&data->sockaddr, res->ai_addr, sizeof(struct sockaddr));
 	src = ((struct sockaddr_in *)res->ai_addr)->sin_addr;
 	if (!inet_ntop(AF_INET, &src, data->ip, INET_ADDRSTRLEN))
 		fatal_error(errno, data->host, 0, data);
@@ -75,7 +75,7 @@ t_data	*setup_socket(t_data *data)
 {
 	struct sockaddr_in	from;
 	
-	bzero(&from, sizeof(from));
+	ft_bzero(&from, sizeof(from));
 	from.sin_family = AF_INET;
 	from.sin_port = htons(data->id);
 	data->sndsock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);

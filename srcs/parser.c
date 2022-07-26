@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 14:42:56 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/26 01:41:13 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/26 02:22:58 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static int	set_option(char *option, int index, t_data *data)
 	for (int i = 0; i < NB_FLAGS * 2 - 1; i++)
 	{
 		len  = strlen(opt_lst[i]);
-		if (strncmp(option, opt_lst[i], len) == 0)
+		if (ft_strncmp(option, opt_lst[i], len) == 0)
 		{
 			if (i >= NB_FLAGS && !option[len]) 
 				flag_error(ET_NOARG, i, index, NULL, data);
