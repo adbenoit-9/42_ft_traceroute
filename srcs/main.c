@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 17:38:13 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/24 18:43:27 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/26 02:01:09 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@ int		print_usage(void)
     printf("                              reached). Default is 30\n");
 	printf("  -q nqueries  --queries=nqueries\n");
 	printf("                              Set the number of probes per each hop. Default is 3\n");
+	printf("  -w waittime\n");
+	printf("                              Set the time (in seconds) to wait for a response to\n");
+	printf("                              a probe. Default is 5.0 sec\n");
 	printf("  --help                      Read this help and exit\n");
 	printf("\nAguments:\n");
 	printf("+     host          The host to traceroute to\n");

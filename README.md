@@ -33,6 +33,8 @@ Print the route packets trace to network host.
     Set the max number of hops (max TTL to be reached). Default is 30.<br><br>
     <strong>-q</strong> <ins>nqueries</ins>  <strong>--queries</strong>=<ins>nqueries</ins><br>
     Set the number of probes per each hop. Default is 3.<br><br>
+    <strong>-w</strong> <ins>waittime</ins><br>
+    Set the time (in seconds) to wait for a response to a probe. Default is 5.0 sec.<br><br>
     <strong>--help</strong><br>
     Print help info and exit.<br><br>
 </p>
