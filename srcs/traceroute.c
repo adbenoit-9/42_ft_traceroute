@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:39:49 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/27 14:18:37 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/27 15:46:56 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	traceroute(t_data *data)
 	dprintf(STDOUT_FILENO,
 		"ft_traceroute to %s (%s), %d hops max, %d bytes packets",
 		dns_resolution(((struct sockaddr_in *)data->addrinfo->ai_addr)->sin_addr, data->host),
-		data->host, MAX_TTL, data->packetlen);
+		data->ip, MAX_TTL, data->packetlen);
 	probe.seq = 1;
 	probe.id = 0;
 	probe.ttl = data->first_ttl;
