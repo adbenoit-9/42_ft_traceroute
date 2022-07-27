@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 12:14:41 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/27 13:26:27 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/27 13:36:49 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,29 +32,29 @@ static const char	*dns_resolution(struct ip ip)
 		ft_perror(ft_strerror(errno), "inet_ntop");
 	if (ft_strcmp(src, "127.0.0.1") == 0)
 		return ("localhost");
-	ptr = src;	
+	ptr = src;
 	return (ptr);
 }
 
 static int	print_trace(void *packet, int seq, t_data *data, double rtt)
 {
 	char			src[INET_ADDRSTRLEN];
-	static char 	tmp[INET_ADDRSTRLEN];
+	static char		tmp[INET_ADDRSTRLEN];
 	t_probe			probe;
-	struct ip		ip;
+	struct ip		iphdr;
 
 	probe = get_probe_data(seq, data);
 	if (!(data->status & RTIMEDOUT) && rtt > -0.99) {
-		ip = ((t_header *)packet)->ip;
-		if (!inet_ntop(AF_INET, &ip.ip_src, src, INET_ADDRSTRLEN))
+		iphdr = ((t_header *)packet)->ip;
+		if (!inet_ntop(AF_INET, &iphdr.ip_src, src, INET_ADDRSTRLEN))
 			ft_perror(ft_strerror(errno), "inet_ntop");
 		if (probe.id == 0) {
 			dprintf(STDOUT_FILENO, "\n%2d  %s (%s)  %.3f ms ", probe.ttl,
-				dns_resolution(ip), src, rtt);
+				dns_resolution(iphdr), src, rtt);
 		}
 		else if (ft_strncmp(src, tmp, INET_ADDRSTRLEN) != 0) {
 			dprintf(STDOUT_FILENO, " %s (%s) %.3f ms ",
-				dns_resolution(ip), src, rtt);
+				dns_resolution(iphdr), src, rtt);
 		}
 		else
 			dprintf(STDOUT_FILENO, " %.3f ms ", rtt);

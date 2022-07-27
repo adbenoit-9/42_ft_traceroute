@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 18:45:13 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/27 11:00:08 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/27 13:53:57 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	setup_host(char **arg, int i, t_data *data)
 t_data	*setup_socket(t_data *data)
 {
 	struct sockaddr_in	from;
-	
+
 	ft_bzero(&from, sizeof(from));
 	from.sin_family = AF_INET;
 	from.sin_port = htons(data->id);

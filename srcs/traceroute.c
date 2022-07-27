@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:39:49 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/27 12:41:48 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/27 13:54:56 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_probe	get_probe_data(int seq, t_data *data)
 {
 	t_probe	probe_data;
-	
+
 	probe_data.seq = seq;
 	probe_data.id = (seq - 1) % data->nqueries;
 	probe_data.ttl = (seq - 1) / data->nqueries + data->first_ttl;
@@ -28,7 +28,7 @@ static void	probe_transmission(t_probe probe, t_data *data)
 	char			udp_packet[SENDLEN];
 	struct timeval	tv;
 	int				rcv_seq;
-	
+
 	ft_bzero(udp_packet, SENDLEN);
 	if (!(data->status & PSENDING))
 		gettimeofday(&tv, NULL);
@@ -47,12 +47,13 @@ static void	probe_transmission(t_probe probe, t_data *data)
 	}
 }
 
-void    traceroute(t_data *data)
+void	traceroute(t_data *data)
 {
 	t_probe			probe;
 
-	dprintf(STDOUT_FILENO, "ft_traceroute to %s (%s), %d hops max, %d bytes packets",
-	data->host, data->ip, MAX_TTL, data->packetlen);
+	dprintf(STDOUT_FILENO,
+		"ft_traceroute to %s (%s), %d hops max, %d bytes packets",
+		data->host, data->ip, MAX_TTL, data->packetlen);
 	probe.seq = 1;
 	probe.id = 0;
 	probe.ttl = data->first_ttl;

@@ -6,15 +6,18 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 14:42:56 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/26 02:22:58 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/27 13:52:57 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_traceroute.h"
 
-static void	flag_error(int error, int flag, int index, const char *arg, t_data *data) {
-	char	*syntax[] = {"-f first_ttl", "-m max_ttl", "-q nqueries", "-w waittime",
-		"--first=first_ttl", "--max-hops=max_ttl", "--queries=nqueries"};
+static void	flag_error(int error, int flag, int index, const char *arg,
+t_data *data)
+{
+	char	*syntax[] = {"-f first_ttl", "-m max_ttl", "-q nqueries",
+		"-w waittime", "--first=first_ttl", "--max-hops=max_ttl",
+		"--queries=nqueries"};
 	char	*flag_lst[] = FLAG_LST;
 	char	str[4096];
 
@@ -31,7 +34,7 @@ static void	flag_error(int error, int flag, int index, const char *arg, t_data *
 
 static int	get_packetlen(const char *str, t_data *data, int index)
 {
-	int 	packetlen;
+	int		packetlen;
 	char	error[4096];
 
 	if (!ft_isnumber(str))
@@ -92,7 +95,7 @@ static int	set_option(char *option, int index, t_data *data)
 		exit(print_usage());
 	for (int i = 0; i < NB_FLAGS * 2 - 1; i++)
 	{
-		len  = strlen(opt_lst[i]);
+		len = ft_strlen(opt_lst[i]);
 		if (ft_strncmp(option, opt_lst[i], len) == 0)
 		{
 			if (i >= NB_FLAGS && !option[len]) 
@@ -130,9 +133,8 @@ t_data	*parser(char **arg, t_data *data)
 			flag = set_option(arg[i] + 1, i, data);
 			continue ;
 		}
-		else if (ihost == -1) {
+		else if (ihost == -1)
 			ihost = i;
-		}
 		else if (ihost != -1 && ipcklen == -1)
 			ipcklen = i;
 		else
