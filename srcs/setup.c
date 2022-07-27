@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 18:45:13 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/26 02:23:22 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/27 11:00:08 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ t_data	*setup_socket(t_data *data)
 		fatal_error(errno, "socket", 0, data);
 	if (bind(data->sndsock, (struct sockaddr *)&from, sizeof(from)) == -1)
 		fatal_error(errno, NULL, 0, data);
-	data->rcvsock = socket(AF_INET, SOCK_DGRAM, IPPROTO_ICMP);
+	data->rcvsock = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
 	if (data->rcvsock == -1)
 		fatal_error(errno, "socket", 0, data);
 	return (data);

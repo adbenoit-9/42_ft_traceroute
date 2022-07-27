@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:44:42 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/26 02:21:51 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/27 12:15:49 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void    traceroute(t_data *data);
 int		recv_packet(t_data *data, char *dest);
 int		parse_packet(t_data *data, void *packet, int seq);
 void	send_probe(t_data *data, char *packet, int seq);
+int		handle_output(void	*packet, int seq, t_data *data, struct timeval sent_time);
 
 t_data		init_data(void);
 int			setup_host(char **arg, int i, t_data *data);
