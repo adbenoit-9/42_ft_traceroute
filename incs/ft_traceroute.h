@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:44:42 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/27 13:33:54 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/27 14:16:08 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ t_probe	get_probe_data(int seq, t_data *data);
 t_data	init_data(void);
 int		setup_host(char **arg, int i, t_data *data);
 t_data	*setup_socket(t_data *data);
+char	*dns_resolution(struct in_addr ipaddr, char *ipstr);
 
 /* Error functions */
 char	*ft_strerror(int error);

@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:39:49 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/27 13:54:56 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/27 14:18:37 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,21 @@ t_probe	get_probe_data(int seq, t_data *data)
 	probe_data.id = (seq - 1) % data->nqueries;
 	probe_data.ttl = (seq - 1) / data->nqueries + data->first_ttl;
 	return (probe_data);
+}
+
+char	*dns_resolution(struct in_addr ipaddr, char *ipstr)
+{
+	struct hostent	*host;
+	char			src[INET_ADDRSTRLEN];
+
+	host = gethostbyaddr((char *)&ipaddr, INET_ADDRSTRLEN, AF_INET);
+	if (host && host->h_name)
+		return (host->h_name);
+	if (!inet_ntop(AF_INET, &ipaddr, src, INET_ADDRSTRLEN))
+		ft_perror(ft_strerror(errno), "inet_ntop");
+	if (ft_strcmp(ipstr, "127.0.0.1") == 0)
+		return ("localhost");
+	return (ipstr);
 }
 
 static void	probe_transmission(t_probe probe, t_data *data)
@@ -53,7 +68,8 @@ void	traceroute(t_data *data)
 
 	dprintf(STDOUT_FILENO,
 		"ft_traceroute to %s (%s), %d hops max, %d bytes packets",
-		data->host, data->ip, MAX_TTL, data->packetlen);
+		dns_resolution(((struct sockaddr_in *)data->addrinfo->ai_addr)->sin_addr, data->host),
+		data->host, MAX_TTL, data->packetlen);
 	probe.seq = 1;
 	probe.id = 0;
 	probe.ttl = data->first_ttl;
