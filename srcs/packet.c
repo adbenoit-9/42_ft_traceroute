@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 14:21:29 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/26 01:29:27 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/27 12:42:38 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,5 +94,8 @@ int	parse_packet(t_data *data, void *packet, int seq)
 #endif
 	if (ntohs(hdr->udp.uh_dport) - UDP_PORT == seq)
 		data->status &= ~RWAIT;
+	if (hdr->icmp.icmp_type != ICMP_TIME_EXCEEDED
+			&& get_probe_data(seq, data).id == 2)
+		data->status |= END;
 	return (ntohs(hdr->udp.uh_dport) - UDP_PORT);	
 }

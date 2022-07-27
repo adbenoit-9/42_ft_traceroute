@@ -6,7 +6,7 @@
 #    By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/28 16:29:13 by adbenoit          #+#    #+#              #
-#    Updated: 2022/07/27 12:16:05 by adbenoit         ###   ########.fr        #
+#    Updated: 2022/07/27 13:25:44 by adbenoit         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,6 @@ SRC				:=	main.c \
 					traceroute.c \
 					setup.c \
 					parser.c \
-					time.c \
 					packet.c \
 					output.c \
 					debug.c

@@ -6,25 +6,11 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 11:54:29 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/25 14:58:23 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/27 13:26:52 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_traceroute.h"
-
-void	debug_addrinfo(struct addrinfo info)
-{
-	struct sockaddr_in	*addr;
-
-	printf("flags: %d\n", info.ai_flags);
-	printf("family: %d\n", info.ai_family);
-	printf("socktype: %d\n", info.ai_socktype);
-	printf("protocol: %d\n", info.ai_protocol);
-	printf("addrlen: %u\n", info.ai_addrlen);
-	addr = (struct sockaddr_in *)info.ai_addr;
-	printf("addr %s\n", inet_ntoa((struct in_addr)addr->sin_addr));
-	printf("canonname: %s\n", info.ai_canonname);
-}
 
 void	debug_ip(struct ip iphdr)
 {

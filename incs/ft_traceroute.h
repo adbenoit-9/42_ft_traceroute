@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:44:42 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/27 12:15:49 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/27 13:25:29 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	ft_bzero(void *s, size_t n);
 void	*ft_memset(void *b, int c, size_t len);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
-void	*ft_calloc(size_t count, size_t size);
 
 void	clear_data(t_data *data);
 int		print_usage(void);
@@ -72,12 +71,12 @@ int		recv_packet(t_data *data, char *dest);
 int		parse_packet(t_data *data, void *packet, int seq);
 void	send_probe(t_data *data, char *packet, int seq);
 int		handle_output(void	*packet, int seq, t_data *data, struct timeval sent_time);
+t_probe	get_probe_data(int seq, t_data *data);
 
 t_data		init_data(void);
 int			setup_host(char **arg, int i, t_data *data);
 t_data		*setup_socket(t_data *data);
 int			ft_wait(struct timeval start_time, size_t nb_sec);
-double		tv_to_ms(struct timeval t);
 
 void	debug_icmp(struct icmp icmphdr);
 void	debug_ip(struct ip iphdr);

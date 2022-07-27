@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:35:48 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/26 02:23:41 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/27 12:44:39 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,15 +176,4 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 		++i;
 	}
 	return (dst);
-}
-
-void	*ft_calloc(size_t count, size_t size)
-{
-	char	*mem;
-
-	mem = (char *)malloc(count * size);
-	if (!mem)
-		return (0);
-	ft_bzero(mem, count * size);
-	return ((void *)mem);
 }
