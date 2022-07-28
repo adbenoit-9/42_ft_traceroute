@@ -6,7 +6,7 @@
 /*   By: adbenoit <adbenoit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 14:21:29 by adbenoit          #+#    #+#             */
-/*   Updated: 2022/07/27 13:49:40 by adbenoit         ###   ########.fr       */
+/*   Updated: 2022/07/28 16:02:33 by adbenoit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	recv_packet(t_data *data, char *dest)
 
 	ret = 0;
 	timeout.tv_sec = data->waittime;
-	timeout.tv_usec = (data->waittime - timeout.tv_sec) * 1000;
+	timeout.tv_usec = (data->waittime - timeout.tv_sec) * 1000000;
 	addrlen = sizeof(data->sockaddr);
 	FD_ZERO(&fds);
 	FD_SET(data->rcvsock, &fds);
@@ -71,7 +71,7 @@ int	parse_packet(t_data *data, void *packet, int seq)
 	if (ntohs(hdr->udp.uh_dport) - UDP_PORT == seq)
 		data->status &= ~RWAIT;
 	if (hdr->icmp.icmp_type != ICMP_TIME_EXCEEDED
-		&& get_probe_data(seq, data).id == 2)
+		&& get_probe_data(seq, data).id == data->nqueries - 1)
 		data->status |= END;
 	return (ntohs(hdr->udp.uh_dport) - UDP_PORT);
 }
